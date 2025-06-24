@@ -1,10 +1,10 @@
 package com.evaruiz.healthcarer.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +16,7 @@ import java.util.Set;
 public class UserDB {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -28,16 +28,15 @@ public class UserDB {
     @Column(nullable = false)
     private String encodedPassword;
 
-    @OneToMany
-    @JsonManagedReference
+    private String role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TreatmentDB> treatments = new HashSet<>();
 
-    @OneToMany
-    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MedicationDB> medications = new HashSet<>();
 
-    @OneToMany
-    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TakeDB> takes = new HashSet<>();
 
 }
