@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div>
+        {{#error}}
+            <p>{{error}}</p>
+        {{/error}}
+        {{^error}}
+            <p>Lo sentimos, ha ocurrido un error inesperado.</p>
+        {{/error}}
+    </div>
+</div>
+</body>
+</html>

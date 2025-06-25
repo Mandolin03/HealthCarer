@@ -1,6 +1,5 @@
 package com.evaruiz.healthcarer.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,12 +31,16 @@ public class MedicationDB {
     @Column(nullable = false)
     private Float dose;
 
+    private String imagePath;
+
     @ManyToMany
     private Set<TreatmentDB> treatments = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private UserDB user;
 
     @ManyToMany
     private Set<TakeDB> takes = new HashSet<>();
+
 }

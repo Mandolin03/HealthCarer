@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo medicamento</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Nuevo medicamento</h1>
+
+<form action="/medications/save" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="stock">Existencias:</label>
+        <input type="number" id="stock" name="stock" step="any" required>
+    </div>
+    <div>
+        <label for="instructions">Instrucciones:</label>
+        <textarea id="instructions" name="instructions" required></textarea>
+    </div>
+    <div>
+        <label for="dose">Dosis:</label>
+        <input type="number" id="dose" name="dose" step="any" required>
+    </div>
+    <div>
+        <label for="imagenFile">Seleccionar imagen:</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+    </div>
+    <div>
+        <button type="submit">Añadir medicamento</button>
+    </div>
+</form>
+<br>
+<a href="/medications/">Volver</a>
+</body>
+</html>

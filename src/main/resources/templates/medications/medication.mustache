@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medication Details</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Medication Details</h1>
+
+<p><strong>ID:</strong> {{medication.id}}</p>
+<p><strong>Name:</strong> {{medication.name}}</p>
+<p><strong>Stock:</strong> {{medication.stock}}</p>
+<p><strong>Instructions:</strong> {{medication.instructions}}</p>
+<p><strong>Dose:</strong> {{medication.dose}}</p>
+<p><strong>Image:</strong></p>
+{{#medication.imagenPath}}
+    <img src="{{medication.imagenPath}}" alt="Medication Image" class="detail-image"> {{/medication.imagenPath}}
+{{^medication.imagenPath}}
+    <p>No image available.</p>
+{{/medication.imagenPath}}
+<br><br>
+<a href="/medications/list">Back to List</a>
+</body>
+</html>

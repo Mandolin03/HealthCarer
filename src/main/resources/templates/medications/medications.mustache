@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicamentos</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Mis medicamentos</h1>
+<p><a href="/medications/new">Añadir medicamento</a></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Existencias</th>
+        <th>Imagen</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#medications}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{stock}}</td>
+            <td>
+                {{#imagePath}}
+                    <img src="{{imagePath}}" alt="Imagen del medicamento" />
+                {{/imagePath}}
+                {{^imagePath}}
+                    Imagen no disponible
+                {{/imagePath}}
+            </td>
+            <td>
+                <a href="/medications/{{id}}">Detalles</a> |
+                <a href="/medications/edit/{{id}}">Editar</a> |
+                <form action="/medications/delete/{{id}}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres borrar el medicamento?');">
+                    <button type="submit">Borrar</button>
+                </form>
+            </td>
+        </tr>
+    {{/medications}}
+    {{^medications}}
+        <tr>
+            <td colspan="5">No se han encontrado medicamentos</td>
+        </tr>
+    {{/medications}}
+    </tbody>
+</table>
+<br/>
+</body>
+</html>
