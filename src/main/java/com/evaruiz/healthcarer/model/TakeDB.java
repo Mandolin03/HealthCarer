@@ -1,8 +1,5 @@
 package com.evaruiz.healthcarer.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,11 +24,9 @@ public class TakeDB {
     private Date date;
 
     @ManyToMany
-    @JsonManagedReference
     private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne
-    @JsonBackReference
     private UserDB user;
 
 }

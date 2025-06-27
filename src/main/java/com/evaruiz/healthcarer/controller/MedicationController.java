@@ -167,23 +167,22 @@ public class MedicationController {
 
     @PostMapping("/delete/{id}")
     public String deleteMedication(@PathVariable Long id,
-                                   @AuthenticationPrincipal LoggedUser currentUser,
                                    RedirectAttributes redirectAttributes) {
-
+        UserDB currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "You must be logged in to delete a medication.");
-            return "redirect:/login";
+            return "redirect:/errorPage";
         }
 
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Medication not found for deletion.");
-            return "redirect:/medications/list";
+            return "redirect:/errorPage";
         }
         MedicationDB medicationToDelete = medicationOptional.get();
-        if (!medicationToDelete.getUser().getId().equals(currentUser.getUser().getId())) {
+        if (!medicationToDelete.getUser().getId().equals(currentUser.getId())) {
             redirectAttributes.addFlashAttribute("error", "You are not authorized to delete this medication.");
-            return "redirect:/medications/list";
+            return "redirect:/errorPage";
         }
         try {
             if (medicationToDelete.getImagePath() != null && !medicationToDelete.getImagePath().isEmpty()) {
@@ -193,10 +192,12 @@ public class MedicationController {
             redirectAttributes.addFlashAttribute("message", "Medication deleted successfully!");
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("error", "Error deleting image file: " + e.getMessage());
+            return "redirect:/errorPage";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An unexpected error occurred during deletion: " + e.getMessage());
+            return "redirect:/errorPage";
         }
-        return "redirect:/medications/list";
+        return "redirect:/medications/";
     }
 
 

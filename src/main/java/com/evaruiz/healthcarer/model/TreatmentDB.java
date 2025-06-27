@@ -1,14 +1,11 @@
 package com.evaruiz.healthcarer.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 
 @Entity
@@ -34,11 +31,9 @@ public class TreatmentDB {
     private int dispensingFrequency;
 
     @ManyToMany
-    @JsonManagedReference
-    private Set<MedicationDB> medications = new HashSet<>();
+    private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne
-    @JsonBackReference
     private UserDB user;
 
 }
