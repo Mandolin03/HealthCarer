@@ -24,9 +24,10 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/css/**", "/images/**", "/js/**", "/uploads/**",
+                        .requestMatchers("/css/**", "/images/**", "/js/**",
                                             "/register").permitAll()
                         .anyRequest().authenticated()
+
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

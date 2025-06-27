@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class LoggedUser implements UserDetails {
+
     private UserDB user;
 
     @Override

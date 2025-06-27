@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @RequiredArgsConstructor
 @Service
@@ -31,8 +33,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).map(LoggedUser::new).orElseThrow(() -> new UsernameNotFoundException(email));
+        LoggedUser user = userRepository.findByEmail(email).map(LoggedUser::new).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        System.out.println("User found: " + user.getUser().getName());
+        System.out.println("User found: " + user.getUser().getEmail());
+        return user;
+
+
     }
 }
 
