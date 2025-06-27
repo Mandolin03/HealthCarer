@@ -7,53 +7,48 @@
 <body>
 <h1>Edit Medication</h1>
 
+{{#medication}}
+<form action="/medications/update/{{id}}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{id}}">
 
-<form action="/medications/update" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="{{medication.id}}">
-
     <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{medication.name}}" required>
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="{{name}}" required>
     </div>
     <div>
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" value="{{medication.stock}}" step="any" required>
+        <label for="stock">Existencias:</label>
+        <input type="number" id="stock" name="stock" value="{{stock}}" step="any" required>
     </div>
     <div>
-        <label for="instructions">Instructions:</label>
-        <textarea id="instructions" name="instructions" required>{{medication.instructions}}</textarea>
+        <label for="instructions">Instrucciones:</label>
+        <textarea id="instructions" name="instructions" required>{{instructions}}</textarea>
     </div>
     <div>
-        <label for="dose">Dose:</label>
-        <input type="number" id="dose" name="dose" value="{{medication.dose}}" step="any" required>
+        <label for="dose">Dosis:</label>
+        <input type="number" id="dose" name="dose" value="{{dose}}" step="any" required>
     </div>
 
-    {{#medication.imagenPath}}
+    {{#imagePath}}
         <div>
-            <p><strong>Current Image:</strong></p>
-            <img src="{{medication.imagenPath}}" alt="Current Medication Image" class="detail-image"> <br>
+            <p><strong>Imagen:</strong></p>
             <input type="checkbox" id="deleteExistingImage" name="deleteExistingImage" value="true">
-            <label for="deleteExistingImage">Delete current image</label>
+            <label for="deleteExistingImage">¿Quiere borrar la imagen actual?</label>
             <br><br>
         </div>
-    {{/medication.imagenPath}}
-    {{^medication.imagenPath}}
-        <div>
-            <p>No current image.</p>
-        </div>
-    {{/medication.imagenPath}}
+    {{/imagePath}}
 
     <div>
-        <label for="imagenFile">Upload New Image (optional):</label>
-        <input type="file" id="imagenFile" name="imagenFile" accept="image/*">
-        <p><small>Leave blank to keep current image or delete it with the checkbox above.</small></p>
+        <label for="imageFile">Nueva imagen:</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/*">
+        <p><small>Si has marcado la casilla de arriba, selecciona la nueva imagen.</small></p>
     </div>
     <div>
-        <button type="submit">Update Medication</button>
+        <button type="submit">Editar</button>
     </div>
 </form>
 <br>
-<a href="/medications/list">Back to List</a> |
-<a href="/medications/{{medication.id}}">View Details</a>
+<a href="/medications/list">Volver</a> |
+<a href="/medications/{{id}}">Detalles</a>
+{{/medication}}
 </body>
 </html>

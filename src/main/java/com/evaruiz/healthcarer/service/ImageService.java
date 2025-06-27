@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-    private final String UPLOAD_DIRECTORY = "./src/main/resources/static/uploads";
+    private final String UPLOAD_DIRECTORY = "src/main/resources/static/uploads";
 
     public String uploadImage(MultipartFile imageFile) throws IOException {
         String originalFileName = imageFile.getOriginalFilename();
@@ -29,7 +29,7 @@ public class ImageService {
         }
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        return "/uploads/" + fileName;
+        return fileName;
     }
 
     public void deleteImageFile(String imagePath) throws IOException {

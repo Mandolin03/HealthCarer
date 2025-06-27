@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "medications")
@@ -34,13 +35,11 @@ public class MedicationDB {
     private String imagePath;
 
     @ManyToMany
-    private Set<TreatmentDB> treatments = new HashSet<>();
+    private List<TreatmentDB> treatments = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private UserDB user;
 
     @ManyToMany
-    private Set<TakeDB> takes = new HashSet<>();
-
+    private List<TakeDB> takes = new ArrayList<>();
 }

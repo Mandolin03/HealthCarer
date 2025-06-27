@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Medication Details</title>
+    <title>Detalles</title>
     <link rel="stylesheet" href="/css/styles.css"> </head>
 <body>
-<h1>Medication Details</h1>
-
-<p><strong>ID:</strong> {{medication.id}}</p>
-<p><strong>Name:</strong> {{medication.name}}</p>
-<p><strong>Stock:</strong> {{medication.stock}}</p>
-<p><strong>Instructions:</strong> {{medication.instructions}}</p>
-<p><strong>Dose:</strong> {{medication.dose}}</p>
-<p><strong>Image:</strong></p>
-{{#medication.imagenPath}}
-    <img src="{{medication.imagenPath}}" alt="Medication Image" class="detail-image"> {{/medication.imagenPath}}
-{{^medication.imagenPath}}
-    <p>No image available.</p>
-{{/medication.imagenPath}}
+<h1>Detalles de la medicación</h1>
+{{#medication}}
+<p><strong>Nombre:</strong> {{name}}</p>
+<p><strong>Existencias:</strong> {{stock}}</p>
+<p><strong>Instrucciones:</strong> {{instructions}}</p>
+<p><strong>Dosis:</strong> {{dose}}</p>
+<p><strong>Imagen:</strong></p>
+{{#imagePath}}
+    <img src="/uploads/{{imagePath}}" alt="Imagen de la medicacion">
+{{/imagePath}}
+{{^imagePath}}
+    <p>Imagen no disponible.</p>
+{{/imagePath}}
+{{/medication}}
 <br><br>
-<a href="/medications/list">Back to List</a>
+<a href="/medications/">Volver</a>
 </body>
 </html>
