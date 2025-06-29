@@ -2,14 +2,15 @@ package com.evaruiz.healthcarer.controller;
 
 
 import com.evaruiz.healthcarer.model.DTO.CreateMedicationDTO;
-import com.evaruiz.healthcarer.model.LoggedUser;
+import com.evaruiz.healthcarer.model.DTO.LoggedUser;
 import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.ImageService;
 import com.evaruiz.healthcarer.service.MedicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,8 +38,12 @@ public class MedicationController {
     }
 
     @GetMapping("/")
-    public String listMedications(Model model) {
+    public String listMedications(Model model, RedirectAttributes redirectAttributes) {
         UserDB currentUser = getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tus medicamentos.");
+            return "redirect:/errorPage";
+        }
         List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
         model.addAttribute("medications", medications);
         return "/medications/medications";
@@ -46,6 +51,11 @@ public class MedicationController {
 
     @GetMapping("/{id}")
     public String showMedicationDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        UserDB currentUser = getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu medicación.");
+            return "redirect:/errorPage";
+        }
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isPresent()) {
             model.addAttribute("medication", medicationOptional.get());
@@ -56,8 +66,25 @@ public class MedicationController {
         }
     }
 
+    @GetMapping("/image/{imageName}")
+    public ResponseEntity<FileSystemResource> serveMedicationImage(@PathVariable String imageName) {
+        FileSystemResource image = imageService.getImageFile(imageName);
+        if (image != null && image.exists()) {
+            return ResponseEntity.ok()
+                    .header("Content-Type", "image/jpeg")
+                    .body(image);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/new")
-    public String showCreationForm() {
+    public String showCreationForm(RedirectAttributes redirectAttributes) {
+        UserDB currentUser = getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
+            return "redirect:/errorPage";
+        }
         return "/medications/createMedication";
     }
 
@@ -98,6 +125,10 @@ public class MedicationController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         UserDB currentUser = getCurrentUser();
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu medicación.");
+            return "redirect:/errorPage";
+        }
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isPresent()) {
             MedicationDB medication = medicationOptional.get();
@@ -124,7 +155,7 @@ public class MedicationController {
 
         UserDB currentUser = getCurrentUser();
         if (currentUser == null) {
-            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una medicación.");
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu medicación.");
             return "redirect:/errorPage";
         }
         Optional<MedicationDB> optionalMedication = medicationService.findById(id);
@@ -170,18 +201,18 @@ public class MedicationController {
                                    RedirectAttributes redirectAttributes) {
         UserDB currentUser = getCurrentUser();
         if (currentUser == null) {
-            redirectAttributes.addFlashAttribute("error", "You must be logged in to delete a medication.");
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para borrar tu medicación.");
             return "redirect:/errorPage";
         }
 
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Medication not found for deletion.");
+            redirectAttributes.addFlashAttribute("error", "La medicación que intenta borrar no existe.");
             return "redirect:/errorPage";
         }
         MedicationDB medicationToDelete = medicationOptional.get();
         if (!medicationToDelete.getUser().getId().equals(currentUser.getId())) {
-            redirectAttributes.addFlashAttribute("error", "You are not authorized to delete this medication.");
+            redirectAttributes.addFlashAttribute("error", "No estás autorizado para borrar esta medicación.");
             return "redirect:/errorPage";
         }
         try {
@@ -189,12 +220,11 @@ public class MedicationController {
                 imageService.deleteImageFile(medicationToDelete.getImagePath());
             }
             medicationService.deleteMedication(id);
-            redirectAttributes.addFlashAttribute("message", "Medication deleted successfully!");
         } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "Error deleting image file: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Ha habido un error al borrar la imagen: " + e.getMessage());
             return "redirect:/errorPage";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "An unexpected error occurred during deletion: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Ha habido un error inesperado al borrar la imagen " + e.getMessage());
             return "redirect:/errorPage";
         }
         return "redirect:/medications/";
