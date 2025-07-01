@@ -220,6 +220,10 @@ public class MedicationController {
             return "redirect:/errorPage";
         }
         try {
+            if (medicationToDelete.getTakes() != null && !medicationToDelete.getTakes().isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "No se puede borrar la medicación porque está asociada a un registro de toma.");
+                return "redirect:/errorPage";
+            }
             if (medicationToDelete.getImagePath() != null && !medicationToDelete.getImagePath().isEmpty()) {
                 imageService.deleteImageFile(medicationToDelete.getImagePath());
             }
@@ -233,6 +237,4 @@ public class MedicationController {
         }
         return "redirect:/medications/";
     }
-
-
 }

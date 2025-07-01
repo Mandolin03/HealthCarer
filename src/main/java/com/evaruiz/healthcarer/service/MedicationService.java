@@ -6,6 +6,7 @@ import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.MedicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class MedicationService {
         medicationRepository.save(medication);
     }
 
+    @Transactional
     public void deleteMedication(Long id) {
         medicationRepository.deleteById(id);
     }

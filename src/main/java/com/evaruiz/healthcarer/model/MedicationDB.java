@@ -34,12 +34,12 @@ public class MedicationDB {
 
     private String imagePath;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "medications")
     private List<TreatmentDB> treatments = new ArrayList<>();
 
     @ManyToOne
     private UserDB user;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "medications", fetch = FetchType.EAGER)
     private List<TakeDB> takes = new ArrayList<>();
 }

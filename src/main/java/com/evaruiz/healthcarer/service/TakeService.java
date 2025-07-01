@@ -1,6 +1,5 @@
 package com.evaruiz.healthcarer.service;
 
-import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.TakeDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.TakeRepository;
