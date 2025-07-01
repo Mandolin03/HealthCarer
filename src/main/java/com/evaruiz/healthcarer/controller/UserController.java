@@ -16,6 +16,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/errorPage")
+    public String errorPage() {
+        return "errorPage";
+    }
+
     @GetMapping("/")
     public String home() {
         return "index";

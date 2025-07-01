@@ -98,6 +98,10 @@ public class MedicationController {
             return "redirect:/errorPage";
         }
         try {
+            if(!medication.validate()){
+                redirectAttributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
+                return "redirect:/errorPage";
+            }
             MedicationDB newMedication = new MedicationDB();
             newMedication.setName(medication.name());
             newMedication.setStock(medication.stock());

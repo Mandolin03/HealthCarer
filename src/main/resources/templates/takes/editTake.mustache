@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Toma</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Editar Toma</h1>
+
+<form action="/takes/edit/{{id}}" method="post">
+    <input type="hidden" name="id" value="{{take.id}}" />
+    <div>
+        <label for="date">Fecha de la Toma:</label>
+        <input type="datetime-local" id="date" name="date" value="{{formattedTakeDate}}" required/>
+    </div>
+
+    <div>
+        <label>Medicamentos:</label><br>
+        {{#medicationDTOs}}
+            <div>
+                <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}" {{#selected}}checked{{/selected}}/>
+                <label for="medication_{{id}}">{{name}}</label><br>
+            </div>
+        {{/medicationDTOs}}
+    </div>
+
+    <button type="submit">Editar</button>
+</form>
+
+<a href="/takes/">Volver a la lista de Tomas</a>
+</body>
+</html>

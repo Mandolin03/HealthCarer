@@ -2,7 +2,7 @@ package com.evaruiz.healthcarer.service;
 
 import com.evaruiz.healthcarer.model.DTO.RegisterUserDTO;
 import com.evaruiz.healthcarer.model.UserDB;
-import com.evaruiz.healthcarer.model.LoggedUser;
+import com.evaruiz.healthcarer.model.DTO.LoggedUser;
 import com.evaruiz.healthcarer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +41,10 @@ public class UserService implements UserDetailsService {
         return user;
 
 
+    }
+
+    public void saveUser(UserDB user) {
+        userRepository.save(user);
     }
 }
 

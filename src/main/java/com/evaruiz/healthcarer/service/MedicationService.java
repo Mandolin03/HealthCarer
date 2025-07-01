@@ -6,6 +6,8 @@ import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.MedicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +18,10 @@ public class MedicationService {
 
     private final MedicationRepository medicationRepository;
 
+
     public List<MedicationDB> findMedicationsByUser(UserDB user) {
         return medicationRepository.findByUser(user);
     }
-
 
     public Optional<MedicationDB> findById(Long id) {
         return medicationRepository.findById(id);

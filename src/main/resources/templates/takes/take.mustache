@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Detalles de la toma</h1>
+{{#take}}
+    <p><strong>Fecha:</strong> {{date}}</p>
+    <p><strong>Lista de medicamentos:</strong></p>
+    <ul>
+        {{#medications}}
+            <li>{{name}} ({{dose}})</li>
+        {{/medications}}
+    </ul>
+{{/take}}
+<br><br>
+<a href="/takes/">Volver</a>
+</body>
+</html>

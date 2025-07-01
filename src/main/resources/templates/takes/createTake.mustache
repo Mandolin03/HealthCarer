@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva toma</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Añadir Nueva Toma</h1>
+<form action="/takes/save" method="post">
+    <div>
+        <label for="date">Fecha de la Toma:</label>
+        <input type="datetime-local" id="date" name="date" required/>
+    </div>
+
+    <div>
+        <label>Medicamentos:</label><br>
+        {{#medications}}
+            <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}">
+            <label for="medication_{{id}}">{{name}}</label><br>
+        {{/medications}}
+    </div>
+
+    <button type="submit">Añadir</button>
+</form>
+</body>
+</html>

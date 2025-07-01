@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial</title>
+    <link rel="stylesheet" href="/css/styles.css"> </head>
+<body>
+<h1>Historial de tomas</h1>
+<p><a href="/takes/new">Añadir toma</a></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Lista de medicamentos</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#takes}}
+        <tr>
+            <td>{{date}}</td>
+            <td>{{#medications}}
+                <ul>
+                    <li>{{name}} ({{dose}})</li>
+                </ul>
+                {{/medications}}
+            </td>
+            <td>
+                <a href="/takes/{{id}}">Detalles</a> |
+                <a href="/takes/edit/{{id}}">Editar</a> |
+                <form action="/takes/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar la toma?');">
+                    <button type="submit">Borrar</button>
+                </form>
+            </td>
+        </tr>
+    {{/takes}}
+    {{^takes}}
+        <tr>
+            <td colspan="5">No se han encontrado tomas</td>
+        </tr>
+    {{/takes}}
+    </tbody>
+</table>
+<br/>
+</body>
+</html>

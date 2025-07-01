@@ -1,5 +1,6 @@
-package com.evaruiz.healthcarer.model;
+package com.evaruiz.healthcarer.model.DTO;
 
+import com.evaruiz.healthcarer.model.UserDB;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

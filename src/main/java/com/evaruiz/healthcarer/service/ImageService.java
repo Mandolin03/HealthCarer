@@ -1,5 +1,6 @@
 package com.evaruiz.healthcarer.service;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-    private final String UPLOAD_DIRECTORY = "src/main/resources/static/uploads";
+    private final String UPLOAD_DIRECTORY = "/uploads/";
 
     public String uploadImage(MultipartFile imageFile) throws IOException {
         String originalFileName = imageFile.getOriginalFilename();
@@ -23,7 +24,7 @@ public class ImageService {
             fileExtension = originalFileName.substring(dotIndex);
         }
         String fileName = UUID.randomUUID() + fileExtension;
-        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
+        Path uploadPath = Path.of(UPLOAD_DIRECTORY);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -37,11 +38,24 @@ public class ImageService {
             return;
         }
         String localFileName = imagePath.replace("/uploads/", "");
-        Path filePath = Paths.get(UPLOAD_DIRECTORY).resolve(localFileName);
+        Path filePath = Path.of(UPLOAD_DIRECTORY).resolve(localFileName);
         if (Files.exists(filePath)) {
             Files.delete(filePath);
         } else {
             throw new IOException("No se ha encontrado la imagen: " + imagePath);
+        }
+    }
+
+    public FileSystemResource getImageFile(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return null;
+        }
+        String localFileName = imagePath.replace("/uploads/", "");
+        Path filePath = Paths.get(UPLOAD_DIRECTORY, localFileName);
+        if (Files.exists(filePath)) {
+            return new FileSystemResource(filePath);
+        } else {
+            return null;
         }
     }
 
