@@ -8,10 +8,12 @@
 <h1>Detalles de la toma</h1>
 {{#take}}
     <p><strong>Fecha:</strong> {{date}}</p>
+    <p><strong>Hora:</strong> {{time}}</p>
     <p><strong>Lista de medicamentos:</strong></p>
     <ul>
         {{#medications}}
-            <li>{{name}} ({{dose}})</li>
+        <li><strong>Medicamento:</strong> {{name}}</li>
+        <li><strong>Dosis tomada:</strong> {{dose}}</li>
         {{/medications}}
     </ul>
 {{/take}}

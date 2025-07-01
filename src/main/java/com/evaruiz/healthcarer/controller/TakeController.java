@@ -1,6 +1,7 @@
 package com.evaruiz.healthcarer.controller;
 
 import com.evaruiz.healthcarer.model.DTO.CreateTakeDTO;
+import com.evaruiz.healthcarer.model.DTO.FormattedDateTake;
 import com.evaruiz.healthcarer.model.DTO.TakeMedicationDTO;
 import com.evaruiz.healthcarer.model.DTO.LoggedUser;
 import com.evaruiz.healthcarer.model.MedicationDB;
@@ -8,7 +9,6 @@ import com.evaruiz.healthcarer.model.TakeDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.MedicationService;
 import com.evaruiz.healthcarer.service.TakeService;
-import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,7 +30,6 @@ public class TakeController {
 
     private final TakeService takeService;
     private final MedicationService medicationService;
-    private final UserService userService;
 
     private static UserDB getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -65,8 +61,20 @@ public class TakeController {
             return "redirect:/errorPage";
         }
         List<TakeDB> takes = takeService.findTakesByUser(currentUser);
-        model.addAttribute("takes", takes);
+        List<FormattedDateTake> formattedTakes = new ArrayList<>();
+        for (TakeDB take : takes) {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedDate = take.getDate().format(dateFormatter);
+            String formattedTime = take.getDate().format(timeFormatter);
+            List<MedicationDB> medications = take.getMedications();
+            medications.sort(Comparator.comparing(MedicationDB::getName));
+            formattedTakes.add(new FormattedDateTake(take.getId(), formattedDate, formattedTime, medications));
+        }
+        formattedTakes.sort(Comparator.comparing(FormattedDateTake::date).reversed());
+        model.addAttribute("takes", formattedTakes);
         return "/takes/takes";
+
     }
 
     @GetMapping("/{id}")
@@ -78,10 +86,14 @@ public class TakeController {
         }
         Optional<TakeDB> takeOptional = takeService.findById(id);
         if (takeOptional.isPresent()) {
-            model.addAttribute("take", takeOptional.get());
-            List<MedicationDB> medications = takeOptional.get().getMedications();
+            TakeDB take = takeOptional.get();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedDate = take.getDate().format(dateFormatter);
+            String formattedTime = take.getDate().format(timeFormatter);
+            List<MedicationDB> medications = take.getMedications();
             medications.sort(Comparator.comparing(MedicationDB::getName));
-            model.addAttribute("medications", medications);
+            model.addAttribute("take", new FormattedDateTake(take.getId(), formattedDate, formattedTime, medications));
             return "/takes/take";
         } else {
             redirectAttributes.addFlashAttribute("error", "La toma que busca no se ha encontrado o no existe.");
@@ -140,7 +152,7 @@ public class TakeController {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para guardar una toma.");
             return "redirect:/errorPage";
         }
-        if(!take.validate()){
+        if(take.validate()){
             redirectAttributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
             return "redirect:/errorPage";
         }
@@ -160,7 +172,7 @@ public class TakeController {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una toma.");
             return "redirect:/errorPage";
         }
-        if(!take.validate()){
+        if(take.validate()){
             redirectAttributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
             return "redirect:/errorPage";
         }
