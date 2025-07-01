@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -38,11 +39,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(RegisterUserDTO newUser, Model model) {
+    public String registerUser(RegisterUserDTO newUser, RedirectAttributes redirectAttributes) {
         boolean validate = newUser.validate();
         if (!validate) {
-            model.addAttribute("error", "Invalid data provided");
-            return "register";
+            redirectAttributes.addFlashAttribute("error", "Los datos introducidos no son válidos");
+            return "redirect:/errorPage";
+        }
+        String normalizedEmail = newUser.email().trim();
+        if (userService.findByEmail(normalizedEmail)) {
+            redirectAttributes.addFlashAttribute("error", "El email ya está en uso");
+            return "redirect:/errorPage";
         }
         userService.registerUser(newUser);
         return "redirect:/login";

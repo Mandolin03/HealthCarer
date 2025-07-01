@@ -19,14 +19,17 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public void registerUser(RegisterUserDTO newUser) {
-        if (newUser == null || !newUser.validate()) {
-            throw new IllegalArgumentException("Invalid user data provided");
+
+        String normalizedEmail = newUser.email().trim();
+        if (userRepository.findByEmail(normalizedEmail).isPresent()) {
+            throw new IllegalArgumentException("Email already in use: " + normalizedEmail);
+
         }
+
         UserDB user = new UserDB();
         user.setName(newUser.name());
-        user.setEmail(newUser.email());
+        user.setEmail(normalizedEmail);
         user.setEncodedPassword(passwordEncoder.encode(newUser.password()));
         user.setRole("ROLE_USER");
         userRepository.save(user);
@@ -39,12 +42,10 @@ public class UserService implements UserDetailsService {
         System.out.println("User found: " + user.getUser().getName());
         System.out.println("User found: " + user.getUser().getEmail());
         return user;
-
-
     }
 
-    public void saveUser(UserDB user) {
-        userRepository.save(user);
+    public boolean findByEmail(String normalizedEmail) {
+        return userRepository.findByEmail(normalizedEmail).isPresent();
     }
 }
 

@@ -30,7 +30,12 @@ public class TreatmentDB {
     @Column(nullable = false)
     private int dispensingFrequency;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "treatment_medication",
+            joinColumns = @JoinColumn(name = "treatment_id"),
+            inverseJoinColumns = @JoinColumn(name = "medication_id")
+    )
     private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne

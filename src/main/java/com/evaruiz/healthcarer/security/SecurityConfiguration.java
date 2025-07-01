@@ -25,19 +25,24 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/images/**", "/js/**",
-                                            "/register").permitAll()
+                                            "/register", "/errorPage").permitAll()
                         .anyRequest().authenticated()
 
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/", true)
-                        .passwordParameter("password")
+                        .defaultSuccessUrl("/index", true)
                         .usernameParameter("email")
+                        .passwordParameter("password")
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                );
         http.csrf(AbstractHttpConfigurer::disable);
         http.userDetailsService(userDetailsService);
         return http.build();
