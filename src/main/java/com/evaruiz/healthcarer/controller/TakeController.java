@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -154,6 +155,10 @@ public class TakeController {
         }
         if(take.validate()){
             redirectAttributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
+            return "redirect:/errorPage";
+        }
+        if(!take.date().isBefore(LocalDateTime.now())){
+            redirectAttributes.addFlashAttribute("error", "La fecha y hora de la toma debe ser anterior a la actual.");
             return "redirect:/errorPage";
         }
         TakeDB newTake = new TakeDB();

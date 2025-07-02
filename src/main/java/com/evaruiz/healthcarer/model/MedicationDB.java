@@ -37,7 +37,7 @@ public class MedicationDB {
     @ManyToMany(mappedBy = "medications")
     private List<TreatmentDB> treatments = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserDB user;
 
     @ManyToMany(mappedBy = "medications", fetch = FetchType.EAGER)

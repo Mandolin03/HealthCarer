@@ -10,7 +10,7 @@ public record CreateTakeDTO(
     Long[] medications
 ) {
     public boolean validate() {
-        return date == null || !date.isBefore(LocalDateTime.now()) ||
-                medications == null || medications.length <= 0;
+        return date == null ||
+                medications == null || medications.length == 0;
     }
 }

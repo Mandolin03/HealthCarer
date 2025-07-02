@@ -7,6 +7,7 @@ import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.ImageService;
 import com.evaruiz.healthcarer.service.MedicationService;
+import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class MedicationController {
 
     private final MedicationService medicationService;
     private final ImageService imageService;
+    private final UserService userService;
 
 
     private static UserDB getCurrentUser() {
@@ -219,22 +221,7 @@ public class MedicationController {
             redirectAttributes.addFlashAttribute("error", "No estás autorizado para borrar esta medicación.");
             return "redirect:/errorPage";
         }
-        try {
-            if (medicationToDelete.getTakes() != null && !medicationToDelete.getTakes().isEmpty()) {
-                redirectAttributes.addFlashAttribute("error", "No se puede borrar la medicación porque está asociada a un registro de toma.");
-                return "redirect:/errorPage";
-            }
-            if (medicationToDelete.getImagePath() != null && !medicationToDelete.getImagePath().isEmpty()) {
-                imageService.deleteImageFile(medicationToDelete.getImagePath());
-            }
-            medicationService.deleteMedication(id);
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "Ha habido un error al borrar la imagen: " + e.getMessage());
-            return "redirect:/errorPage";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Ha habido un error inesperado al borrar la imagen " + e.getMessage());
-            return "redirect:/errorPage";
-        }
+        medicationService.removeMedicationFromUser(id);
         return "redirect:/medications/";
     }
 }

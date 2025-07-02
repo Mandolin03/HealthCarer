@@ -32,7 +32,7 @@ public class TakeDB {
     )
     private List<MedicationDB> medications;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserDB user;
 
 }
