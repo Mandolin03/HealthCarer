@@ -1,0 +1,204 @@
+/* --- Treatments List Page Specific Styles --- */
+
+/* Adjusting H1 margin for the top of the page */
+h1 {
+    margin-bottom: 30px;
+}
+
+/* Container for add button */
+.treatments-controls {
+    width: 100%;
+    max-width: 900px; /* Adjust max-width as needed for table content */
+    text-align: center;
+    margin-bottom: 25px; /* Space before the table */
+}
+
+/* Link to add new treatment */
+.treatments-controls p a {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.treatments-controls p a:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.treatments-controls p a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+/* Specific styling for the 'No treatments found' message */
+.no-treatments-message {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--label-color);
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 900px; /* Match table max-width */
+    box-sizing: border-box;
+}
+
+/* Table container for consistent styling (similar to takes_history.css) */
+.table-container {
+    width: 100%;
+    max-width: 900px; /* Max width for the table container */
+    background-color: var(--card-background);
+    border-radius: 12px;
+    overflow: hidden; /* Ensures rounded corners on table shadow */
+    box-shadow: 0 8px 20px var(--shadow-color);
+    margin-bottom: 30px;
+}
+
+/* Table general styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+/* Table header styling */
+thead {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+/* Table body rows */
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: var(--background-color);
+}
+
+td {
+    padding: 15px 20px;
+    font-size: 1em;
+    color: var(--text-color);
+    vertical-align: middle;
+}
+
+/* Styling for the nested medication list within table cells */
+.medication-list-in-treatment {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.medication-list-in-treatment li {
+    margin-bottom: 3px; /* Smaller space for items in a dense list */
+    font-size: 0.95em;
+    color: var(--text-color);
+}
+
+.medication-list-in-treatment li:last-child {
+    margin-bottom: 0;
+}
+
+/* Action buttons within table cells (consistent with other lists) */
+.actions-cell {
+    white-space: nowrap; /* Prevent buttons from wrapping */
+}
+
+.action-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: none;
+    margin-right: 5px;
+}
+
+.action-button:last-child {
+    margin-right: 0;
+}
+
+.details-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(210, 105, 30, 0.2);
+}
+
+.details-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(210, 105, 30, 0.3);
+}
+
+.edit-button {
+    background-color: #6C757D; /* Neutral grey for edit */
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
+}
+
+.edit-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.delete-button {
+    background-color: var(--error-color); /* Red for delete */
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(255, 99, 71, 0.2);
+}
+
+.delete-button:hover {
+    background-color: #CC3333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 99, 71, 0.3);
+}
+
+.delete-form {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+/* Home link at the bottom */
+.home-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.home-link:hover {
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+    text-decoration: underline;
+}

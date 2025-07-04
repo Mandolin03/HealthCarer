@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -23,12 +25,14 @@ public class TreatmentDB {
     private String name;
 
     @Column(nullable = false)
-    private Date startDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime startDate;
 
-    private Date endDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime endDate;
 
     @Column(nullable = false)
-    private int dispensingFrequency;
+    private Float dispensingFrequency;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

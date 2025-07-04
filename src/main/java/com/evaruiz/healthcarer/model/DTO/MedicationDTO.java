@@ -1,6 +1,6 @@
 package com.evaruiz.healthcarer.model.DTO;
 
-public record TakeMedicationDTO(
+public record MedicationDTO(
     Long id,
     String name,
     boolean selected

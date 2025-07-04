@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Tratamiento</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/login_register.css"> <link rel="stylesheet" href="/css/treatment_form.css"> </head>
+<body>
+{{> header}} <h1>Editar Tratamiento</h1>
+
+<div class="form-container">
+    {{#treatment}}
+        <form action="/treatments/update/{{id}}" method="post">
+            <input type="hidden" name="id" value="{{id}}">
+
+            <div>
+                <label for="name">Nombre del Tratamiento:</label>
+                <input type="text" id="name" name="name" value="{{name}}" maxlength="50" required>
+            </div>
+
+            <div>
+                <label for="startDate">Fecha de Inicio:</label>
+                <input type="date" id="startDate" name="startDate" value="{{formattedStartDate}}" required>
+            </div>
+
+            <div>
+                <label for="endDate">Fecha de Fin:</label>
+                <input type="date" id="endDate" name="endDate" value="{{formattedEndDate}}" required>
+            </div>
+
+            <div>
+                <label for="dispensingFrequency">Frecuencia de Dispensación (días):</label>
+                <input type="number" id="dispensingFrequency" name="dispensingFrequency" value="{{dispensingFrequency}}" step="0.1" min="0.1" required>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>Medicamentos incluidos:</label>
+                {{^medicationDTOs}}
+                    <p class="no-meds-available">No hay medicamentos disponibles para seleccionar. <a href="/medications/new">Añadir uno ahora</a>.</p>
+                {{/medicationDTOs}}
+                {{#medicationDTOs}}
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="medication_{{id}}" name="medicationIds" value="{{id}}" {{#selected}}checked{{/selected}}>
+                        <label for="medication_{{id}}">{{name}}</label>
+                    </div>
+                {{/medicationDTOs}}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="action-button primary-button">Guardar Cambios</button>
+                <a href="/treatments/" class="action-button secondary-button">Cancelar</a>
+            </div>
+        </form>
+    {{/treatment}}
+</div>
+</body>
+</html>

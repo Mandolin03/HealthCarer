@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Tratamiento</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/treatment_details.css"> </head>
+<body>
+{{> header}} <h1>Detalles del Tratamiento</h1>
+
+<div class="treatment-details-container">
+    {{#treatment}}
+        <div class="detail-item">
+            <strong>Nombre:</strong> <span>{{name}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Fecha de Inicio:</strong> <span>{{startDate}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Fecha de Fin:</strong> <span>{{endDate}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Frecuencia de Dispensación:</strong> <span>{{dispensingFrequency}} días</span>
+        </div>
+        <div class="detail-item">
+            <strong>Medicamentos incluidos:</strong>
+            <ul class="included-medications-list">
+                {{#medications}}
+                    <li>
+                        <span>{{name}}</span>
+                    </li>
+                {{/medications}}
+                {{^medications}}
+                    <li>No hay medicamentos asignados a este tratamiento.</li>
+                {{/medications}}
+            </ul>
+        </div>
+    {{/treatment}}
+
+    <div class="details-actions">
+        <a href="/treatments/" class="action-button secondary-button">Volver a Tratamientos</a>
+        <a href="/treatments/edit/{{treatment.id}}" class="action-button edit-button">Editar Tratamiento</a>
+    </div>
+</div>
+</body>
+</html>

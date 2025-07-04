@@ -2,7 +2,7 @@ package com.evaruiz.healthcarer.controller;
 
 import com.evaruiz.healthcarer.model.DTO.CreateTakeDTO;
 import com.evaruiz.healthcarer.model.DTO.FormattedDateTake;
-import com.evaruiz.healthcarer.model.DTO.TakeMedicationDTO;
+import com.evaruiz.healthcarer.model.DTO.MedicationDTO;
 import com.evaruiz.healthcarer.model.DTO.LoggedUser;
 import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.TakeDB;
@@ -70,7 +70,11 @@ public class TakeController {
             String formattedTime = take.getDate().format(timeFormatter);
             List<MedicationDB> medications = take.getMedications();
             medications.sort(Comparator.comparing(MedicationDB::getName));
-            formattedTakes.add(new FormattedDateTake(take.getId(), formattedDate, formattedTime, medications));
+            formattedTakes.add(new FormattedDateTake(
+                    take.getId(),
+                    formattedDate,
+                    formattedTime,
+                    medications));
         }
         formattedTakes.sort(Comparator.comparing(FormattedDateTake::date).reversed());
         model.addAttribute("takes", formattedTakes);
@@ -110,10 +114,6 @@ public class TakeController {
             return "redirect:/errorPage";
         }
         List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
-        if (medications.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Debes tener al menos una medicación para crear una toma.");
-            return "redirect:/errorPage";
-        }
         model.addAttribute("medications", medications);
         return "/takes/createTake";
     }
@@ -131,10 +131,10 @@ public class TakeController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String formattedDate = take.getDate().format(formatter);
             List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
-            List<TakeMedicationDTO> medicationDTOs = new ArrayList<>();
+            List<MedicationDTO> medicationDTOs = new ArrayList<>();
             for (MedicationDB med : medications) {
                 boolean isSelected = take.getMedications().contains(med);
-                medicationDTOs.add(new TakeMedicationDTO(med.getId(), med.getName(), isSelected));
+                medicationDTOs.add(new MedicationDTO(med.getId(), med.getName(), isSelected));
             }
             model.addAttribute("medicationDTOs", medicationDTOs);
             model.addAttribute("take", take);
