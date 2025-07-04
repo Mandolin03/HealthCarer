@@ -15,12 +15,8 @@
 <div class="medication-controls">
     <p><a href="/medications/new">Añadir medicamento</a></p>
 
-    {{^medications}}
-        <p class="no-medications-message">No tiene ningún medicamento registrado.</p>
-    {{/medications}}
-</div>
 
-{{#medications}}
+</div>
     <div class="table-container">
         <table>
             <thead>
@@ -30,8 +26,9 @@
                 <th>Acciones</th>
             </tr>
             </thead>
-            <tbody>
             {{#medications}}
+            <tbody>
+
                 <tr>
                     <td>{{name}}</td>
                     <td>
@@ -47,11 +44,14 @@
                         </form>
                     </td>
                 </tr>
-            {{/medications}}
             </tbody>
+            {{/medications}}
         </table>
+        {{^medications}}
+            <p class="no-medications-message">No tiene ningún medicamento registrado.</p>
+        {{/medications}}
     </div>
-{{/medications}}
+
 <br/>
 </body>
 </html>

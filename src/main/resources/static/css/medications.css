@@ -144,25 +144,6 @@ meter::-webkit-meter-even-less-good-value { /* For 'low' value */
     border-radius: 10px;
 }
 
-meter::-moz-meter-bar {
-    border-radius: 10px;
-}
-
-meter:-moz-meter-optimum {
-    background: #4CAF50;
-    border-radius: 10px;
-}
-
-meter:-moz-meter-sub-optimum {
-    background: #FFD54F;
-    border-radius: 10px;
-}
-
-meter:-moz-meter-under-optimum {
-    background: #FF7043;
-    border-radius: 10px;
-}
-
 /* Action buttons within table cells */
 .actions-cell {
     white-space: nowrap; /* Prevent buttons from wrapping */

@@ -13,11 +13,9 @@
     <p><a href="/takes/new">Añadir toma</a></p>
 </div>
 
-{{^takes}}
-    <p class="no-takes-message">No se han encontrado tomas registradas.</p>
-{{/takes}}
 
-{{#takes}}
+
+
     <div class="table-container">
         <table>
             <thead>
@@ -27,8 +25,8 @@
                 <th>Medicamentos tomados</th> <th>Acciones</th>
             </tr>
             </thead>
-            <tbody>
             {{#takes}}
+            <tbody>
                 <tr>
                     <td>{{date}}</td>
                     <td>{{time}}</td>
@@ -47,11 +45,15 @@
                         </form>
                     </td>
                 </tr>
-            {{/takes}}
             </tbody>
+            {{/takes}}
         </table>
+        {{^takes}}
+            <p class="no-takes-message">No se han encontrado tomas registradas.</p>
+        {{/takes}}
     </div>
-{{/takes}}
+
+
 
 <br/>
 </body>
