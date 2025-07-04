@@ -7,7 +7,6 @@ import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.ImageService;
 import com.evaruiz.healthcarer.service.MedicationService;
-import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +30,6 @@ public class MedicationController {
 
     private final MedicationService medicationService;
     private final ImageService imageService;
-    private final UserService userService;
 
 
     private static UserDB getCurrentUser() {
@@ -47,6 +46,7 @@ public class MedicationController {
             return "redirect:/errorPage";
         }
         List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+        medications.sort(Comparator.comparing(MedicationDB::getName));
         model.addAttribute("medications", medications);
         return "/medications/medications";
     }
@@ -149,8 +149,6 @@ public class MedicationController {
             return "redirect:/errorPage";
         }
     }
-
-
 
     @PostMapping("/update/{id}")
     public String updateMedication(@ModelAttribute MedicationDB medication,

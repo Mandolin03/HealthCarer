@@ -1,0 +1,166 @@
+/* --- Profile Container Style --- */
+.profile-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 450px; /* Specific max-width for profile */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- Profile Information Section --- */
+.profile-info {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+/* --- Profile Info Item Style --- */
+.profile-info div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* --- Label Style (Profile) --- */
+.profile-info label {
+    font-weight: 500;
+    color: var(--label-color);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+/* --- Profile Information Display Style --- */
+.profile-info span {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    font-size: 1.1em;
+    word-wrap: break-word;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* --- Profile Actions (Buttons/Links) --- */
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* --- Profile Action Link/Button Style (inherits from base, but explicitly defined here for clarity) --- */
+.profile-actions a,
+.profile-actions button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+/* --- Profile Action Hover Style --- */
+.profile-actions a:hover,
+.profile-actions button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+/* --- Profile Action Active (Click) Style --- */
+.profile-actions a:active,
+.profile-actions button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+/* --- Responsive Adjustments for Profile Actions --- */
+@media (min-width: 500px) {
+    .profile-actions {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .profile-actions a,
+    .profile-actions button {
+        width: auto;
+        flex-grow: 1;
+    }
+}
+
+
+/* --- Profile Action Buttons Specifics (Primary/Secondary) --- */
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+.secondary-button {
+    background-color: #6C757D; /* A neutral grey for secondary actions */
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.secondary-button:hover {
+    background-color: #5A6268; /* Darker grey */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+}
+
+/* Ensure these general action button styles are in profile.css too,
+   they might have been in base.css previously but are more specific to actions */
+.profile-actions a,
+.profile-actions button {
+    display: inline-block; /* Ensure they behave like block elements for width/margin */
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border: none; /* Remove default button border */
+    cursor: pointer;
+    box-sizing: border-box; /* Include padding in width */
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+/* Adjust the margin-top for the form itself, if needed, to match other forms */
+form {
+    margin-top: 25px; /* Adjust if you need more space below h1 */
+}
+
+/* Ensure the form takes the correct max-width, matching the profile-container */
+form {
+    max-width: 450px; /* Use the same max-width as .profile-container */
+}

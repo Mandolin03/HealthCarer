@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>HealthCareR</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/header.css">
 </head>
 <body>
+{{> header}}
+<h1>Bienvenido a HealthCareR</h1>
 <div class="container">
-    <h1>Bienvenido a HealthCareR</h1>
     <div class="navigation-links">
         <p><a href="/medications/">Mis medicamentos</a></p>
         <p><a href="/takes/">Mi historial de tomas</a></p>
+        <p><a href="/treatments">Mis tratamientos</a></p>
+        <p><a href="/users/{{id}}">Mi perfil</a></p>
     </div>
 </div>
 </body>

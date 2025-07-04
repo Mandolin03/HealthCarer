@@ -2,47 +2,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Historial</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <title>Historial de tomas</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/takes_history.css"> </head>
 <body>
-<h1>Historial de tomas</h1>
-<p><a href="/takes/new">Añadir toma</a></p>
+{{> header}} <h1>Historial de tomas</h1>
 
-<table>
-    <thead>
-    <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Lista de medicamentos</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#takes}}
-        <tr>
-            <td>{{date}}</td>
-            <td>{{time}}</td>
-            <td>{{#medications}}
-                <ul>
-                    <li>{{name}} ({{dose}})</li>
-                </ul>
-                {{/medications}}
-            </td>
-            <td>
-                <a href="/takes/{{id}}">Detalles</a> |
-                <a href="/takes/edit/{{id}}">Editar</a> |
-                <form action="/takes/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar la toma?');">
-                    <button type="submit">Borrar</button>
-                </form>
-            </td>
-        </tr>
-    {{/takes}}
-    {{^takes}}
-        <tr>
-            <td colspan="5">No se han encontrado tomas</td>
-        </tr>
-    {{/takes}}
-    </tbody>
-</table>
+<div class="takes-controls">
+    <p><a href="/takes/new">Añadir toma</a></p>
+</div>
+
+{{^takes}}
+    <p class="no-takes-message">No se han encontrado tomas registradas.</p>
+{{/takes}}
+
+{{#takes}}
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Medicamentos tomados</th> <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#takes}}
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{time}}</td>
+                    <td>
+                        <ul class="medication-list-in-take">
+                            {{#medications}}
+                                <li>{{name}} ({{dose}})</li>
+                            {{/medications}}
+                        </ul>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="/takes/{{id}}" class="action-button details-button">Detalles</a>
+                        <a href="/takes/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <form action="/takes/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar la toma?');" class="delete-form">
+                            <button type="submit" class="action-button delete-button">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/takes}}
+            </tbody>
+        </table>
+    </div>
+{{/takes}}
+
 <br/>
 </body>
 </html>

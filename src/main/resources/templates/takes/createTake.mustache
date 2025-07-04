@@ -2,25 +2,40 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Nueva toma</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <title>Añadir Nueva Toma</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/login_register.css"> <link rel="stylesheet" href="/css/take_form.css"> </head>
 <body>
+{{> header}}
+
 <h1>Añadir Nueva Toma</h1>
-<form action="/takes/save" method="post">
-    <div>
-        <label for="date">Fecha de la Toma:</label>
-        <input type="datetime-local" id="date" name="date" required/>
-    </div>
 
-    <div>
-        <label>Medicamentos:</label><br>
-        {{#medications}}
-            <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}">
-            <label for="medication_{{id}}">{{name}}</label><br>
-        {{/medications}}
-    </div>
+<div class="form-container">
+    <form action="/takes/save" method="post">
+        <div>
+            <label for="date">Fecha y Hora de la Toma:</label>
+            <input type="datetime-local" id="date" name="date" required/>
+        </div>
 
-    <button type="submit">Añadir</button>
-</form>
+        <div class="form-group checkbox-group">
+            <label>Medicamentos:</label>
+            {{^medications}}
+                <p class="no-meds-available">No hay medicamentos disponibles para seleccionar. <a href="/medications/new">Añadir uno ahora</a>.</p>
+            {{/medications}}
+            {{#medications}}
+                <div class="checkbox-item">
+                    <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}">
+                    <label for="medication_{{id}}">{{name}}</label>
+                </div>
+            {{/medications}}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="action-button primary-button">Añadir Toma</button>
+            <a href="/takes/" class="action-button secondary-button">Cancelar</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

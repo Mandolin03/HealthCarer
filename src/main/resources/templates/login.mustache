@@ -2,15 +2,19 @@
 <html lang="es">
 <head>
     <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/login_register.css"> </head>
 <body>
-<h1>Inicio de sesión</h1>
+
 {{#logout}}
     <div class="success-message">
         <p>Se ha cerrado la sesión con éxito.</p>
     </div>
 {{/logout}}
+
+<h1>Inicio de sesión</h1>
 <form action="/login" method="post">
+
     <div>
         <label for="email">Correo electrónico:</label>
         <input type="text" id="email" name="email" required/>
@@ -23,6 +27,7 @@
         <button type="submit">Iniciar sesión</button>
     </div>
 </form>
-<p>¿Eres nuevo? <a href="/register">Pulsa aquí para registrarte</a></p>
+<p class="register-link">¿Eres nuevo? <a href="/register">Pulsa aquí para registrarte</a></p>
+
 </body>
 </html>

@@ -3,39 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Medicamentos</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/medications.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
 <body>
-<h1>Mis medicamentos</h1>
-<p><a href="/medications/new">Añadir medicamento</a></p>
+{{> header}}
 
-<table>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Existencias</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#medications}}
-        <tr>
-            <td>{{name}}</td>
-            <td>{{stock}}</td>
-            <td>
-                <a href="/medications/{{id}}">Detalles</a> |
-                <a href="/medications/edit/{{id}}">Editar</a> |
-                <form action="/medications/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar el medicamento?');">
-                    <button type="submit">Borrar</button>
-                </form>
-            </td>
-        </tr>
-    {{/medications}}
+<h1>Mis medicamentos</h1>
+
+<div class="medication-controls">
+    <p><a href="/medications/new">Añadir medicamento</a></p>
+
     {{^medications}}
-        <tr>
-            <td colspan="5">No se han encontrado medicamentos</td>
-        </tr>
+        <p class="no-medications-message">No tiene ningún medicamento registrado.</p>
     {{/medications}}
-    </tbody>
-</table>
+</div>
+
+{{#medications}}
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Existencias</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#medications}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>
+                        <label class="stock-label">Stock {{stock}}
+                            <meter value="{{stock}}" min="0" max="30" low="7" high="12" optimum="20"></meter>
+                        </label>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="/medications/{{id}}" class="action-button details-button">Detalles</a>
+                        <a href="/medications/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <form action="/medications/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar el medicamento?');" class="delete-form">
+                            <button type="submit" class="action-button delete-button">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/medications}}
+            </tbody>
+        </table>
+    </div>
+{{/medications}}
 <br/>
 </body>
 </html>

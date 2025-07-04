@@ -1,0 +1,68 @@
+/* --- Dashboard Page Specific Styles --- */
+
+/* Adjusting H1 margin for the top of the page when it's outside a container */
+body > h1 { /* Targeting h1 directly under body for specific spacing */
+    margin-top: 40px; /* More space from the top of the page */
+    margin-bottom: 30px; /* Space between h1 and the container */
+    color: var(--primary-color); /* Ensure consistent color from base.css */
+    font-size: 2.8em; /* Keeping it large and prominent */
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    max-width: 500px; /* Keeping consistent max-width for overall alignment */
+}
+
+/* Main container for the dashboard */
+.container {
+    background-color: var(--card-background);
+    padding: 50px; /* Generous padding for the main welcome card */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 500px; /* Consistent max-width for the dashboard card */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 40px; /* More space at the bottom of the page */
+    border: 1px solid var(--border-color);
+}
+
+/* Styles for the navigation links section */
+.navigation-links {
+    margin-top: 0; /* No top margin needed here as it's directly inside .container */
+}
+
+.navigation-links p {
+    margin-bottom: 20px; /* Space between each link paragraph */
+}
+
+.navigation-links p:last-child {
+    margin-bottom: 0; /* Remove bottom margin from the last paragraph */
+}
+
+/* Styling for the individual navigation links */
+.navigation-links a {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    padding: 15px 30px; /* Larger padding for prominent links */
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2em; /* Larger font size for main navigation */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+    width: 80%; /* Make links a bit wider within the container */
+    max-width: 300px; /* Limit max-width to keep them manageable */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.navigation-links a:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px); /* More pronounced lift on hover */
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.navigation-links a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}

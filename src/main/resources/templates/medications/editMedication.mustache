@@ -2,53 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Medication</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <title>Editar Medicamento</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/login_register.css"> <link rel="stylesheet" href="/css/medication_form.css"> </head>
 <body>
-<h1>Edit Medication</h1>
+{{> header}}
 
-{{#medication}}
-<form action="/medications/update/{{id}}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="{{id}}">
+<h1>Editar Medicamento</h1>
 
-    <div>
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" name="name" value="{{name}}" required>
-    </div>
-    <div>
-        <label for="stock">Existencias:</label>
-        <input type="number" id="stock" name="stock" value="{{stock}}" step="any" required>
-    </div>
-    <div>
-        <label for="instructions">Instrucciones:</label>
-        <textarea id="instructions" name="instructions" required>{{instructions}}</textarea>
-    </div>
-    <div>
-        <label for="dose">Dosis:</label>
-        <input type="number" id="dose" name="dose" value="{{dose}}" step="any" required>
-    </div>
+<div class="form-container">
+    {{#medication}}
+        <form action="/medications/update/{{id}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{id}}">
 
-    {{#imagePath}}
-        <div>
-            <p><strong>Imagen:</strong></p>
-            <input type="checkbox" id="deleteExistingImage" name="deleteExistingImage" value="true">
-            <label for="deleteExistingImage">¿Quiere borrar la imagen actual?</label>
-            <br><br>
-        </div>
-    {{/imagePath}}
+            <div>
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" value="{{name}}" maxlength="30" required>
+            </div>
+            <div>
+                <label for="stock">Existencias:</label>
+                <input type="number" id="stock" name="stock" value="{{stock}}" step="any" min="0" required>
+            </div>
+            <div>
+                <label for="instructions">Instrucciones:</label>
+                <textarea id="instructions" name="instructions" maxlength="100" rows="4" required>{{instructions}}</textarea>
+            </div>
+            <div>
+                <label for="dose">Dosis:</label>
+                <input type="number" id="dose" name="dose" value="{{dose}}" step="any" min="0" required>
+            </div>
 
-    <div>
-        <label for="imageFile">Nueva imagen:</label>
-        <input type="file" id="imageFile" name="imageFile" accept="image/*">
-        <p><small>Si has marcado la casilla de arriba, selecciona la nueva imagen.</small></p>
-    </div>
-    <div>
-        <button type="submit">Editar</button>
-    </div>
-</form>
-<br>
-<a href="/medications/">Volver</a> |
-<a href="/medications/{{id}}">Detalles</a>
-{{/medication}}
+            {{#imagePath}}
+                <div class="image-section">
+                    <p><strong>Imagen actual:</strong></p>
+                    <img src="/medications/image/{{imagePath}}" alt="Imagen actual de {{name}}" class="current-med-image">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="deleteExistingImage" name="deleteExistingImage" value="true">
+                        <label for="deleteExistingImage">¿Quiere borrar la imagen actual?</label>
+                    </div>
+                </div>
+            {{/imagePath}}
+
+            <div>
+                <label for="imageFile">Nueva imagen:</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*">
+                <p class="file-info-text"><small>Si desea cambiar la imagen, selecciónala aquí. Si ha marcado la casilla de borrar, esta será la nueva imagen.</small></p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="action-button primary-button">Guardar Cambios</button>
+                <a href="/medications/" class="action-button secondary-button">Cancelar</a>
+            </div>
+        </form>
+    {{/medication}}
+</div>
 </body>
 </html>

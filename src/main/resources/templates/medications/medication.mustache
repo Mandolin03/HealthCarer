@@ -3,23 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalles</title>
-    <link rel="stylesheet" href="/css/styles.css"> </head>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/medication_details.css">
+</head>
 <body>
-<h1>Detalles de la medicación</h1>
-{{#medication}}
-<p><strong>Nombre:</strong> {{name}}</p>
-<p><strong>Existencias:</strong> {{stock}}</p>
-<p><strong>Instrucciones:</strong> {{instructions}}</p>
-<p><strong>Dosis:</strong> {{dose}}</p>
-<p><strong>Imagen:</strong></p>
-{{#imagePath}}
-    <img src="/medications/image/{{imagePath}}" alt="Imagen de la medicacion">
-{{/imagePath}}
-{{^imagePath}}
-    <p>Imagen no disponible.</p>
-{{/imagePath}}
-{{/medication}}
-<br><br>
-<a href="/medications/">Volver</a>
+{{> header}} <h1>Detalles de la medicación</h1>
+
+<div class="medication-details-container">
+    {{#medication}}
+        <div class="detail-item">
+            <strong>Nombre:</strong> <span>{{name}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Existencias:</strong> <span>{{stock}}</span>
+        </div>
+        <div class="detail-item instructions-item">
+            <strong>Instrucciones:</strong> <span>{{instructions}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Dosis:</strong> <span>{{dose}}</span>
+        </div>
+        <div class="detail-item image-section">
+            <strong>Imagen:</strong>
+            {{#imagePath}}
+                <img src="/medications/image/{{imagePath}}" alt="Imagen de {{name}}">
+            {{/imagePath}}
+            {{^imagePath}}
+                <p class="no-image-message">Imagen no disponible.</p>
+            {{/imagePath}}
+        </div>
+    {{/medication}}
+
+    <div class="details-actions">
+        <a href="/medications/" class="action-button secondary-button">Volver a mis medicamentos</a>
+    </div>
+</div>
 </body>
 </html>
