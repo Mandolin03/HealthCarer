@@ -73,12 +73,13 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String userProfile(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Long user = getCurrentUser();
+        Long userid = getCurrentUser();
+        UserDB user = userService.findById(id);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Usuario no encontrado");
             return "redirect:/errorPage";
         }
-        if (!user.equals(id)) {
+        if (!userid.equals(id)) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para ver este perfil");
             return "redirect:/errorPage";
         }
@@ -87,13 +88,14 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/{id}")
-    public String editUserProfile(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
-        Long user = getCurrentUser();
+    public String editUserProfile(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long userid = getCurrentUser();
+        UserDB user = userService.findById(id);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu perfil");
             return "redirect:/errorPage";
         }
-        if (!user.equals(id)) {
+        if (!userid.equals(id)) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar este perfil");
             return "redirect:/errorPage";
         }
@@ -102,7 +104,7 @@ public class UserController {
     }
 
     @PostMapping("/users/edit/{id}")
-    public String updateUserProfile(@PathVariable java.lang.Long id, RegisterUserDTO updatedUser, RedirectAttributes redirectAttributes) {
+    public String updateUserProfile(@PathVariable Long id, RegisterUserDTO updatedUser, RedirectAttributes redirectAttributes) {
         Long user = getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu perfil");
@@ -121,7 +123,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "El email no puede estar vacío");
             return "redirect:/errorPage";
         }
-        if (userService.findByEmail(updatedUser.email())) {
+        if (userService.findByEmail(updatedUser.email()) && !updatedUser.email().equals(userService.findById(user).getEmail())) {
             redirectAttributes.addFlashAttribute("error", "El email ya está en uso");
             return "redirect:/errorPage";
         }

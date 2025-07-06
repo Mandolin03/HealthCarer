@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -31,6 +32,9 @@ public class TreatmentDB {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime endDate;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime lastTakenDate;
+
     @Column(nullable = false)
     private Float dispensingFrequency;
 
@@ -44,5 +48,13 @@ public class TreatmentDB {
 
     @ManyToOne
     private UserDB user;
+
+    public boolean checkIntakeDates() {
+        LocalDateTime objectiveDate = lastTakenDate.plusHours(dispensingFrequency.longValue());
+        LocalDateTime now = LocalDateTime.now();
+        long difference = ChronoUnit.MINUTES.between(objectiveDate, now);
+        return difference >= -10 && difference <= 0;
+
+    }
 
 }

@@ -164,6 +164,7 @@ public class TreatmentController {
         newTreatment.setName(treatment.name());
         newTreatment.setStartDate(treatment.startDate());
         newTreatment.setEndDate(treatment.endDate());
+        newTreatment.setLastTakenDate(treatment.startDate());
         newTreatment.setDispensingFrequency(treatment.dispensingFrequency());
         newTreatment.setMedications(medications);
         UserDB newUser = userService.findById(currentUser);

@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface TreatmentRepository extends JpaRepository<TreatmentDB, Long> {
+
+
     @Query("SELECT t FROM TreatmentDB t WHERE t.user.id = ?1")
     List<TreatmentDB> findAllByUserId(Long id);
 
