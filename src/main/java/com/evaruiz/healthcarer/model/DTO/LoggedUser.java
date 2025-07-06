@@ -2,7 +2,6 @@ package com.evaruiz.healthcarer.model.DTO;
 
 import com.evaruiz.healthcarer.model.UserDB;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ import java.util.List;
 
 
 @AllArgsConstructor
-@Getter
 public class LoggedUser implements UserDetails {
 
     private UserDB user;
@@ -21,6 +19,11 @@ public class LoggedUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return List.of(new SimpleGrantedAuthority(user.getRole()));
+    }
+
+
+    public java.lang.Long getId() {
+        return user.getId();
     }
 
     @Override
@@ -32,4 +35,5 @@ public class LoggedUser implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+
 }

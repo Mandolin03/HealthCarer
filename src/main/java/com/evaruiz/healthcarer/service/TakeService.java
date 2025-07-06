@@ -1,7 +1,6 @@
 package com.evaruiz.healthcarer.service;
 
 import com.evaruiz.healthcarer.model.TakeDB;
-import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.TakeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ public class TakeService {
     private final TakeRepository takeRepository;
 
 
-    public List<TakeDB> findTakesByUser(UserDB user) {
-        return takeRepository.findAllByUser(user);
+    public List<TakeDB> findTakesByUserId(Long id) {
+        return takeRepository.findAllByUserId(id);
     }
     public Optional<TakeDB> findById(Long id) {
         return takeRepository.findById(id);

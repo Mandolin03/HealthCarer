@@ -18,7 +18,7 @@ public class MedicationDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private java.lang.Long id;
 
     @Column(nullable = false)
     private String name;

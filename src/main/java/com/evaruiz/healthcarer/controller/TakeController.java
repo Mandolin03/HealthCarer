@@ -9,6 +9,7 @@ import com.evaruiz.healthcarer.model.TakeDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.MedicationService;
 import com.evaruiz.healthcarer.service.TakeService;
+import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,37 +32,22 @@ public class TakeController {
 
     private final TakeService takeService;
     private final MedicationService medicationService;
+    private final UserService userService;
 
-    private static UserDB getCurrentUser() {
+    private static Long getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoggedUser current = (LoggedUser) authentication.getPrincipal();
-        return current.getUser();
-    }
-
-    private boolean setDateAndMedications(CreateTakeDTO take, RedirectAttributes redirectAttributes, TakeDB newTake) {
-        newTake.setDate(take.date());
-        List<MedicationDB> medications = new ArrayList<>();
-        for (Long medicationId : take.medications()) {
-            Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
-            if (medicationOptional.isPresent()) {
-                medications.add(medicationOptional.get());
-            } else {
-                redirectAttributes.addFlashAttribute("error", "Una o más medicaciones no existen.");
-                return true;
-            }
-        }
-        newTake.setMedications(medications);
-        return false;
+        return current.getId();
     }
 
     @GetMapping("/")
     public String listTakes(Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu historial de tomas.");
             return "redirect:/errorPage";
         }
-        List<TakeDB> takes = takeService.findTakesByUser(currentUser);
+        List<TakeDB> takes = takeService.findTakesByUserId(currentUser);
         List<FormattedDateTake> formattedTakes = new ArrayList<>();
         for (TakeDB take : takes) {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -83,8 +69,8 @@ public class TakeController {
     }
 
     @GetMapping("/{id}")
-    public String showTakeDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String showTakeDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu toma.");
             return "redirect:/errorPage";
@@ -108,19 +94,19 @@ public class TakeController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una toma.");
             return "redirect:/errorPage";
         }
-        List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+        List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         model.addAttribute("medications", medications);
         return "/takes/createTake";
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String showEditForm(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una toma.");
             return "redirect:/errorPage";
@@ -128,9 +114,7 @@ public class TakeController {
         Optional<TakeDB> takeOptional = takeService.findById(id);
         if (takeOptional.isPresent()) {
             TakeDB take = takeOptional.get();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            String formattedDate = take.getDate().format(formatter);
-            List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+            List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
             List<MedicationDTO> medicationDTOs = new ArrayList<>();
             for (MedicationDB med : medications) {
                 boolean isSelected = take.getMedications().contains(med);
@@ -138,7 +122,6 @@ public class TakeController {
             }
             model.addAttribute("medicationDTOs", medicationDTOs);
             model.addAttribute("take", take);
-            model.addAttribute("formattedTakeDate", formattedDate);
             return "/takes/editTake";
         } else {
             redirectAttributes.addFlashAttribute("error", "La toma que busca no se ha encontrado o no existe.");
@@ -148,7 +131,7 @@ public class TakeController {
 
     @PostMapping("/save")
     public String saveTake(CreateTakeDTO take, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para guardar una toma.");
             return "redirect:/errorPage";
@@ -162,8 +145,24 @@ public class TakeController {
             return "redirect:/errorPage";
         }
         TakeDB newTake = new TakeDB();
-        if (setDateAndMedications(take, redirectAttributes, newTake)) return "redirect:/errorPage";
-        newTake.setUser(currentUser);
+        newTake.setDate(take.date());
+        List<MedicationDB> medications = new ArrayList<>();
+        for (Long medicationId : take.medications()) {
+            Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
+            if (medicationOptional.isPresent()) {
+                medications.add(medicationOptional.get());
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Una o más medicaciones no existen.");
+
+            }
+        }
+        newTake.setMedications(medications);
+        UserDB newUser = userService.findById(currentUser);
+        if (newUser == null) {
+            redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
+            return "redirect:/errorPage";
+        }
+        newTake.setUser(newUser);
         takeService.save(newTake);
         return "redirect:/takes/";
     }
@@ -171,8 +170,8 @@ public class TakeController {
 
 
     @PostMapping("/edit/{id}")
-    public String editTake(@PathVariable Long id, CreateTakeDTO take, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String editTake(@PathVariable java.lang.Long id, CreateTakeDTO take, RedirectAttributes redirectAttributes) {
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una toma.");
             return "redirect:/errorPage";
@@ -184,11 +183,22 @@ public class TakeController {
         Optional<TakeDB> takeOptional = takeService.findById(id);
         if (takeOptional.isPresent()) {
             TakeDB existingTake = takeOptional.get();
-            if (!existingTake.getUser().getId().equals(currentUser.getId())) {
+            if (!existingTake.getUser().getId().equals(currentUser)) {
                 redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar esta toma.");
                 return "redirect:/errorPage";
             }
-            if (setDateAndMedications(take, redirectAttributes, existingTake)) return "redirect:/errorPage";
+            existingTake.setDate(take.date());
+            List<MedicationDB> medications = new ArrayList<>();
+            for (Long medicationId : take.medications()) {
+                Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
+                if (medicationOptional.isPresent()) {
+                    medications.add(medicationOptional.get());
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Una o más medicaciones no existen.");
+
+                }
+            }
+            existingTake.setMedications(medications);
             takeService.save(existingTake);
         } else {
             redirectAttributes.addFlashAttribute("error", "La toma que intenta editar no existe.");
@@ -198,8 +208,8 @@ public class TakeController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteTake(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String deleteTake(@PathVariable java.lang.Long id, RedirectAttributes redirectAttributes) {
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para eliminar una toma.");
             return "redirect:/errorPage";
@@ -207,7 +217,7 @@ public class TakeController {
         Optional<TakeDB> takeOptional = takeService.findById(id);
         if (takeOptional.isPresent()) {
             TakeDB take = takeOptional.get();
-            if (take.getUser().getId().equals(currentUser.getId())) {
+            if (take.getUser().getId().equals(currentUser)) {
                 takeService.deleteById(take.getId());
             } else {
                 redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar esta toma.");

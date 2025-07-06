@@ -18,7 +18,7 @@ public class TakeDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private java.lang.Long id;
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")

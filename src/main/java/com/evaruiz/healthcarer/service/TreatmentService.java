@@ -1,7 +1,6 @@
 package com.evaruiz.healthcarer.service;
 
 import com.evaruiz.healthcarer.model.TreatmentDB;
-import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.TreatmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,8 @@ public class TreatmentService {
 
     private final TreatmentRepository treatmentRepository;
 
-    public List<TreatmentDB> findTreatmentsByUser(UserDB user) {
-        return treatmentRepository.findAllByUser(user);
+    public List<TreatmentDB> findTreatmentsByUserId(Long id) {
+        return treatmentRepository.findAllByUserId(id);
     }
     public Optional<TreatmentDB> findById(Long id) {
         return treatmentRepository.findById(id);

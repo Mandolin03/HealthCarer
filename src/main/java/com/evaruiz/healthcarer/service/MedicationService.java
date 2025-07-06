@@ -1,7 +1,6 @@
 package com.evaruiz.healthcarer.service;
 
 import com.evaruiz.healthcarer.model.MedicationDB;
-import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.repository.MedicationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +18,8 @@ public class MedicationService {
     private final MedicationRepository medicationRepository;
 
 
-    public List<MedicationDB> findMedicationsByUser(UserDB user) {
-        return medicationRepository.findByUser(user);
+    public List<MedicationDB> findMedicationsByUserId(Long id) {
+        return medicationRepository.findByUserId(id);
     }
 
     public Optional<MedicationDB> findById(Long id) {

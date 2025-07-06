@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/login_register.css">
     <link rel="stylesheet" href="/css/treatment_form.css"> </head>
 <body>
-{{> header}} <h1>Añadir Nuevo Tratamiento</h1>
+{{> header}} <h1>Crear Nuevo Tratamiento</h1>
 
 <div class="form-container">
     <form action="/treatments/save" method="post">
@@ -23,13 +23,13 @@
         </div>
 
         <div>
-            <label for="endDate">Fecha de Fin:</label>
+            <label for="endDate">Fecha de Finalización:</label>
             <input type="datetime-local" id="endDate" name="endDate" required>
         </div>
 
         <div>
-            <label for="dispensingFrequency">Frecuencia de Dispensación (horas):</label>
-            <input type="number" id="dispensingFrequency" name="dispensingFrequency" step="0.1" min="0.1" required>
+            <label for="dispensingFrequency">¿Con qúe frecuencia repites el tratamiento? (En horas):</label>
+            <input type="number" id="dispensingFrequency" name="dispensingFrequency" step="1" min="0" required>
         </div>
 
         <div class="form-group checkbox-group">

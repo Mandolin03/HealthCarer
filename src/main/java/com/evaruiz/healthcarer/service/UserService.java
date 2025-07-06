@@ -38,10 +38,7 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        LoggedUser user = userRepository.findByEmail(email).map(LoggedUser::new).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-        System.out.println("User found: " + user.getUser().getName());
-        System.out.println("User found: " + user.getUser().getEmail());
-        return user;
+        return userRepository.findByEmail(email).map(LoggedUser::new).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
     public boolean findByEmail(String normalizedEmail) {
@@ -55,6 +52,10 @@ public class UserService implements UserDetailsService {
             user.setEncodedPassword(passwordEncoder.encode(updatedUser.password()));
         }
         userRepository.save(user);
+    }
+
+    public UserDB findById(java.lang.Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
     }
 }
 

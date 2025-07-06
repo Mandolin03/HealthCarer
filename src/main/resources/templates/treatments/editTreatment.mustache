@@ -21,17 +21,17 @@
 
             <div>
                 <label for="startDate">Fecha de Inicio:</label>
-                <input type="date" id="startDate" name="startDate" value="{{formattedStartDate}}" required>
+                <input type="datetime-local" id="startDate" name="startDate" value="{{startDate}}" required>
             </div>
 
             <div>
-                <label for="endDate">Fecha de Fin:</label>
-                <input type="date" id="endDate" name="endDate" value="{{formattedEndDate}}" required>
+                <label for="endDate">Fecha de Finalización:</label>
+                <input type="datetime-local" id="endDate" name="endDate" value="{{endDate}}" required>
             </div>
 
             <div>
-                <label for="dispensingFrequency">Frecuencia de Dispensación (días):</label>
-                <input type="number" id="dispensingFrequency" name="dispensingFrequency" value="{{dispensingFrequency}}" step="0.1" min="0.1" required>
+                <label for="dispensingFrequency">¿Con qúe frecuencia repites el tratamiento? (En horas):</label>
+                <input type="number" id="dispensingFrequency" name="dispensingFrequency" value="{{dispensingFrequency}}" step="1" min="0" required>
             </div>
 
             <div class="form-group checkbox-group">
@@ -41,7 +41,7 @@
                 {{/medicationDTOs}}
                 {{#medicationDTOs}}
                     <div class="checkbox-item">
-                        <input type="checkbox" id="medication_{{id}}" name="medicationIds" value="{{id}}" {{#selected}}checked{{/selected}}>
+                        <input type="checkbox" id="medication_{{id}}" name="medicationIds" value="{{id}}" {{#selected}}{{checked}}{{/selected}}>
                         <label for="medication_{{id}}">{{name}}</label>
                     </div>
                 {{/medicationDTOs}}

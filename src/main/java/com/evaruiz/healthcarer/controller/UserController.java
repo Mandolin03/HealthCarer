@@ -22,10 +22,10 @@ public class UserController {
 
     private final UserService userService;
 
-    private static UserDB getCurrentUser() {
+    private static Long getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoggedUser current = (LoggedUser) authentication.getPrincipal();
-        return current.getUser();
+        return current.getId();
     }
 
     @GetMapping("/errorPage")
@@ -35,12 +35,12 @@ public class UserController {
 
     @GetMapping("/")
     public String home(Model model, RedirectAttributes redirectAttributes) {
-        UserDB user = getCurrentUser();
+        Long user = getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder a esta página");
             return "redirect:/login";
         }
-        model.addAttribute("id", user.getId());
+        model.addAttribute("id", user);
         return "index";
     }
 
@@ -73,12 +73,12 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String userProfile(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB user = getCurrentUser();
+        Long user = getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Usuario no encontrado");
             return "redirect:/errorPage";
         }
-        if (!user.getId().equals(id)) {
+        if (!user.equals(id)) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para ver este perfil");
             return "redirect:/errorPage";
         }
@@ -87,13 +87,13 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/{id}")
-    public String editUserProfile(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB user = getCurrentUser();
+    public String editUserProfile(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long user = getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu perfil");
             return "redirect:/errorPage";
         }
-        if (!user.getId().equals(id)) {
+        if (!user.equals(id)) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar este perfil");
             return "redirect:/errorPage";
         }
@@ -102,13 +102,13 @@ public class UserController {
     }
 
     @PostMapping("/users/edit/{id}")
-    public String updateUserProfile(@PathVariable Long id, RegisterUserDTO updatedUser, RedirectAttributes redirectAttributes) {
-        UserDB user = getCurrentUser();
+    public String updateUserProfile(@PathVariable java.lang.Long id, RegisterUserDTO updatedUser, RedirectAttributes redirectAttributes) {
+        Long user = getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu perfil");
             return "redirect:/errorPage";
         }
-        if (!user.getId().equals(id)) {
+        if (!user.equals(id)) {
             redirectAttributes.addFlashAttribute("error", "No tienes permiso para editar este perfil");
             return "redirect:/errorPage";
         }
@@ -125,7 +125,12 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "El email ya está en uso");
             return "redirect:/errorPage";
         }
-        userService.updateUserProfile(user, updatedUser);
+        UserDB newUser = userService.findById(user);
+        if (newUser == null) {
+            redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
+            return "redirect:/errorPage";
+        }
+        userService.updateUserProfile(newUser, updatedUser);
         return "redirect:/users/" + id;
     }
 

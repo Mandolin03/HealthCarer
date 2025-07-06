@@ -9,6 +9,7 @@ import com.evaruiz.healthcarer.model.TreatmentDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.MedicationService;
 import com.evaruiz.healthcarer.service.TreatmentService;
+import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,21 +34,22 @@ public class TreatmentController {
 
     private final TreatmentService treatmentService;
     private final MedicationService medicationService;
+    private final UserService userService;
 
-    private static UserDB getCurrentUser() {
+    private static java.lang.Long getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoggedUser current = (LoggedUser) authentication.getPrincipal();
-        return current.getUser();
+        return current.getId();
     }
 
     @GetMapping("/")
     public String getTreatments(Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu historial de tomas.");
             return "redirect:/errorPage";
         }
-        List<TreatmentDB> treatments = treatmentService.findTreatmentsByUser(currentUser);
+        List<TreatmentDB> treatments = treatmentService.findTreatmentsByUserId(currentUser);
         List<FormattedDateTreatment> formattedTreatments = new ArrayList<>();
         for (TreatmentDB treatment : treatments) {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -70,19 +72,19 @@ public class TreatmentController {
 
     @GetMapping("/new")
     public String newTreatment(Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear un nuevo tratamiento.");
             return "redirect:/errorPage";
         }
-        List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+        List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         model.addAttribute("medications", medications);
         return "/treatments/createTreatment";
     }
 
     @GetMapping("/{id}")
-    public String getTreatmentDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String getTreatmentDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver los detalles del tratamiento.");
             return "redirect:/errorPage";
@@ -109,8 +111,8 @@ public class TreatmentController {
         return "/treatments/treatment";
     }
     @GetMapping("/edit/{id}")
-    public String editTreatment(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String editTreatment(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar un tratamiento.");
             return "redirect:/errorPage";
@@ -121,10 +123,11 @@ public class TreatmentController {
             return "redirect:/errorPage";
         }
         TreatmentDB treatment = treatmentOptional.get();
-        List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+        List<MedicationDB> treatmentMedications = treatment.getMedications();
+        List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         List<MedicationDTO> medicationDTOs = new ArrayList<>();
         for (MedicationDB med : medications) {
-            boolean isSelected = treatment.getMedications().contains(med);
+            boolean isSelected = treatmentMedications.contains(med);
             medicationDTOs.add(new MedicationDTO(med.getId(), med.getName(), isSelected));
         }
         model.addAttribute("medicationDTOs", medicationDTOs);
@@ -134,7 +137,7 @@ public class TreatmentController {
 
     @PostMapping("/save")
     public String createTreatment(CreateTreatmentDTO treatment, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear un nuevo tratamiento.");
             return "redirect:/errorPage";
@@ -148,7 +151,7 @@ public class TreatmentController {
             return "redirect:/errorPage";
         }
         List<MedicationDB> medications = new ArrayList<>();
-        for (Long medicationId : treatment.medicationIds()) {
+        for (java.lang.Long medicationId : treatment.medicationIds()) {
             Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
             if (medicationOptional.isPresent()) {
                 medications.add(medicationOptional.get());
@@ -163,14 +166,19 @@ public class TreatmentController {
         newTreatment.setEndDate(treatment.endDate());
         newTreatment.setDispensingFrequency(treatment.dispensingFrequency());
         newTreatment.setMedications(medications);
-        newTreatment.setUser(currentUser);
+        UserDB newUser = userService.findById(currentUser);
+        if (newUser == null) {
+            redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
+            return "redirect:/errorPage";
+        }
+        newTreatment.setUser(newUser);
         treatmentService.save(newTreatment);
         return "redirect:/treatments/" + newTreatment.getId();
     }
 
     @PostMapping("/update/{id}")
-    public String updateTreatment(@PathVariable Long id, CreateTreatmentDTO treatment, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String updateTreatment(@PathVariable java.lang.Long id, CreateTreatmentDTO treatment, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar un tratamiento.");
             return "redirect:/errorPage";
@@ -190,7 +198,7 @@ public class TreatmentController {
             return "redirect:/errorPage";
         }
         List<MedicationDB> medications = new ArrayList<>();
-        for (Long medicationId : treatment.medicationIds()) {
+        for (java.lang.Long medicationId : treatment.medicationIds()) {
             Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
             if (medicationOptional.isPresent()) {
                 medications.add(medicationOptional.get());
@@ -209,8 +217,8 @@ public class TreatmentController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteTreatment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String deleteTreatment(@PathVariable java.lang.Long id, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para eliminar un tratamiento.");
             return "redirect:/errorPage";

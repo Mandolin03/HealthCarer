@@ -7,6 +7,7 @@ import com.evaruiz.healthcarer.model.MedicationDB;
 import com.evaruiz.healthcarer.model.UserDB;
 import com.evaruiz.healthcarer.service.ImageService;
 import com.evaruiz.healthcarer.service.MedicationService;
+import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
@@ -30,30 +31,31 @@ public class MedicationController {
 
     private final MedicationService medicationService;
     private final ImageService imageService;
+    private final UserService userService;
 
 
-    private static UserDB getCurrentUser() {
+    private static Long getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoggedUser current = (LoggedUser) authentication.getPrincipal();
-        return current.getUser();
+        return current.getId();
     }
 
     @GetMapping("/")
     public String listMedications(Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tus medicamentos.");
             return "redirect:/errorPage";
         }
-        List<MedicationDB> medications = medicationService.findMedicationsByUser(currentUser);
+        List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         medications.sort(Comparator.comparing(MedicationDB::getName));
         model.addAttribute("medications", medications);
         return "/medications/medications";
     }
 
     @GetMapping("/{id}")
-    public String showMedicationDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String showMedicationDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu medicación.");
             return "redirect:/errorPage";
@@ -82,7 +84,7 @@ public class MedicationController {
 
     @GetMapping("/new")
     public String showCreationForm(RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
             return "redirect:/errorPage";
@@ -94,7 +96,7 @@ public class MedicationController {
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
                                  @RequestParam("imageFile") MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
             return "redirect:/errorPage";
@@ -109,7 +111,12 @@ public class MedicationController {
             newMedication.setStock(medication.stock());
             newMedication.setInstructions(medication.instructions());
             newMedication.setDose(medication.dose());
-            newMedication.setUser(currentUser);
+            UserDB newUser = userService.findById(currentUser);
+            if (newUser == null) {
+                redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
+                return "redirect:/errorPage";
+            }
+            newMedication.setUser(newUser);
 
             if (imageFile != null && !imageFile.isEmpty()) {
                 String imagePath = imageService.uploadImage(imageFile);
@@ -129,8 +136,8 @@ public class MedicationController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+    public String showEditForm(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu medicación.");
             return "redirect:/errorPage";
@@ -138,7 +145,7 @@ public class MedicationController {
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isPresent()) {
             MedicationDB medication = medicationOptional.get();
-            if (!medication.getUser().getId().equals(currentUser.getId())) {
+            if (!medication.getUser().getId().equals(currentUser)) {
                 redirectAttributes.addFlashAttribute("error", "No estás autorizado para editar esta medicación.");
                 return "redirect:/errorPage";
             }
@@ -152,12 +159,12 @@ public class MedicationController {
 
     @PostMapping("/update/{id}")
     public String updateMedication(@ModelAttribute MedicationDB medication,
-                                   @PathVariable Long id,
+                                   @PathVariable java.lang.Long id,
                                    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                    @RequestParam(value = "deleteExistingImage", defaultValue = "false") boolean deleteExistingImage,
                                    RedirectAttributes redirectAttributes) {
 
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu medicación.");
             return "redirect:/errorPage";
@@ -201,9 +208,9 @@ public class MedicationController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMedication(@PathVariable Long id,
+    public String deleteMedication(@PathVariable java.lang.Long id,
                                    RedirectAttributes redirectAttributes) {
-        UserDB currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para borrar tu medicación.");
             return "redirect:/errorPage";
@@ -215,7 +222,7 @@ public class MedicationController {
             return "redirect:/errorPage";
         }
         MedicationDB medicationToDelete = medicationOptional.get();
-        if (!medicationToDelete.getUser().getId().equals(currentUser.getId())) {
+        if (!medicationToDelete.getUser().getId().equals(currentUser)) {
             redirectAttributes.addFlashAttribute("error", "No estás autorizado para borrar esta medicación.");
             return "redirect:/errorPage";
         }
