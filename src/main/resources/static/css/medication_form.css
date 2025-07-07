@@ -1,0 +1,176 @@
+/* --- Medication Form Specific Styles (for Edit and New) --- */
+
+/* Adjusting H1 margin for the top of the page */
+body > h1 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+/* Main form container (reusing styling conventions from profile/login) */
+.form-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 500px; /* Adjust max-width for forms */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 40px; /* Space at the bottom of the page */
+    border: 1px solid var(--border-color);
+}
+
+/* Form field styling (mostly inherited from login_register.css, but for clarity) */
+.form-container form > div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Specific styling for textarea */
+textarea {
+    width: calc(100% - 24px); /* Full width minus padding */
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1.1em;
+    color: var(--text-color);
+    background-color: #FFFFFF;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing only */
+    font-family: 'Quicksand', sans-serif; /* Ensure consistent font */
+}
+
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.25);
+    outline: none;
+    background-color: #FFFFFF;
+}
+
+/* Styling for the image section when editing */
+.image-section {
+    text-align: center; /* Center image and checkbox */
+    margin-bottom: 25px;
+    padding-top: 15px; /* Add some top padding */
+    border-top: 1px dashed var(--border-color); /* A subtle dashed line separator */
+}
+
+.image-section p {
+    margin-bottom: 15px;
+    color: var(--label-color);
+    font-weight: 500;
+}
+
+.current-med-image {
+    max-width: 150px; /* Max width for current image thumbnail */
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center checkbox and label */
+    margin-top: 10px;
+    gap: 8px; /* Space between checkbox and label */
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color); /* Color for checkbox when checked */
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    display: inline-block; /* Make label flow with checkbox */
+    margin-bottom: 0;
+    font-size: 1em;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* Styling for the file input info text */
+.file-info-text {
+    font-size: 0.85em;
+    color: var(--label-color);
+    margin-top: 5px;
+    text-align: left; /* Align hint text with label */
+}
+
+
+/* Form action buttons (Save/Cancel) */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center; /* Center buttons */
+    gap: 15px; /* Space between buttons */
+    margin-top: 30px; /* Space above action buttons */
+    padding-top: 20px; /* Padding above buttons for visual separation */
+    border-top: 1px solid var(--border-color); /* A subtle separator line */
+}
+
+/* Reusing action button styles from profile.css or similar */
+/* These specific styles for action-button, primary-button, secondary-button should
+   already be defined in profile.css or a shared utility CSS.
+   If not, ensure they are present in profile.css or base.css: */
+
+/* Example (ensure these are in profile.css or a dedicated utility file) */
+.action-button {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    max-width: 200px; /* Limit individual button width */
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+.secondary-button {
+    background-color: #6C757D;
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.secondary-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+}
+
+/* Remove stray <br> tags if they exist in HTML */
+body > br {
+    display: none;
+}

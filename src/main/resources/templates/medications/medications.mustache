@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicamentos</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/medications.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+{{> header}}
+
+<h1>Mis medicamentos</h1>
+
+<div class="medication-controls">
+    <p><a href="/medications/new">Añadir medicamento</a></p>
+
+
+</div>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Número de pastillas en posesión:</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            {{#medications}}
+            <tbody>
+
+                <tr>
+                    <td>{{name}}</td>
+                    <td>
+                        <label class="stock-label">{{stock}}
+                            <meter value="{{stock}}" min="0" max="30" low="7" high="12" optimum="20"></meter>
+                        </label>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="/medications/{{id}}" class="action-button details-button">Detalles</a>
+                        <a href="/medications/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <form action="/medications/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar el medicamento?');" class="delete-form">
+                            <button type="submit" class="action-button delete-button">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            {{/medications}}
+        </table>
+        {{^medications}}
+            <p class="no-medications-message">No tiene ningún medicamento registrado.</p>
+        {{/medications}}
+    </div>
+
+<br/>
+</body>
+</html>

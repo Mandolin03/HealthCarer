@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tratamientos</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/treatments.css"> </head>
+<body>
+{{> header}} <h1>Lista de Tratamientos</h1>
+
+<div class="treatments-controls">
+    <p><a href="/treatments/new">Añadir Nuevo Tratamiento</a></p>
+</div>
+
+
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Inicio</th>
+                <th>Finalización</th>
+                <th>Frecuencia de toma</th>
+                <th>Medicamentos</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#treatments}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{startDate}}</td>
+                    <td>{{endDate}}</td>
+                    <td>{{dispensingFrequency}} horas</td>
+                    <td>
+                        <ul class="medication-list-in-treatment">
+                            {{#medications}}
+                                <li>{{name}}</li>
+                            {{/medications}}
+                        </ul>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="/treatments/{{id}}" class="action-button details-button">Detalles</a>
+                        <a href="/treatments/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <form action="/treatments/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este tratamiento?');" class="delete-form">
+                            <button type="submit" class="action-button delete-button">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/treatments}}
+            </tbody>
+        </table>
+        {{^treatments}}
+            <p class="no-treatments-message">No se han encontrado tratamientos registrados.</p>
+        {{/treatments}}
+    </div>
+</body>
+</html>

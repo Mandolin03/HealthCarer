@@ -1,0 +1,104 @@
+/* --- Error Page Specific Styles --- */
+
+body {
+    /* Ensure body styles from base.css allow vertical centering if desired,
+       but usually better to have the error container center itself. */
+}
+
+.error-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 600px; /* Max width for the error card */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-top: 50px; /* Space from the header */
+    margin-bottom: 40px;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.error-heading {
+    color: var(--error-color); /* Use your defined error color for the heading */
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.error-message-box {
+    background-color: rgba(255, 99, 71, 0.1); /* Light red background */
+    border: 1px solid var(--error-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: var(--text-color);
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.error-message-box p {
+    margin: 0; /* Remove default paragraph margins */
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    margin-top: 30px; /* Space above action buttons */
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color); /* A subtle separator line */
+}
+
+/* Reusing action button styles (ensure these are defined in base.css or a shared utility file) */
+.action-button {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    max-width: 200px; /* Limit individual button width */
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+.secondary-button {
+    background-color: #6C757D;
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.secondary-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+}

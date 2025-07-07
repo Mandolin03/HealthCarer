@@ -1,15 +1,12 @@
 package com.evaruiz.healthcarer.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,17 +18,21 @@ public class TakeDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private java.lang.Long id;
 
     @Column(nullable = false)
-    private Date date;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    LocalDateTime date;
 
-    @ManyToMany
-    @JsonManagedReference
-    private List<MedicationDB> medications = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "take_medication",
+            joinColumns = @JoinColumn(name = "take_id"),
+            inverseJoinColumns = @JoinColumn(name = "medication_id")
+    )
+    private List<MedicationDB> medications;
 
-    @ManyToOne
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserDB user;
 
 }

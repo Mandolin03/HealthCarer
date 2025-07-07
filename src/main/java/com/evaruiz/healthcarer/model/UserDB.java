@@ -1,12 +1,13 @@
 package com.evaruiz.healthcarer.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -16,28 +17,27 @@ import java.util.Set;
 public class UserDB {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private java.lang.Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String encodedPassword;
 
-    @OneToMany
-    @JsonManagedReference
-    private Set<TreatmentDB> treatments = new HashSet<>();
+    private String role;
 
-    @OneToMany
-    @JsonManagedReference
-    private Set<MedicationDB> medications = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private List<TreatmentDB> treatments = new ArrayList<>();
 
-    @OneToMany
-    @JsonManagedReference
-    private Set<TakeDB> takes = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private List<MedicationDB> medications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TakeDB> takes = new ArrayList<>();
 
 }

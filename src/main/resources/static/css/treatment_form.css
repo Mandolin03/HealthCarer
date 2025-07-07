@@ -1,0 +1,150 @@
+/* --- Treatment Form Specific Styles (for Add and Edit) --- */
+
+/* Adjusting H1 margin for the top of the page */
+body > h1 {
+    margin-top: 40px; /* Space from the header */
+    margin-bottom: 30px; /* Space between h1 and the form container */
+}
+
+/* Main form container (reusing styling conventions from other forms) */
+.form-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 500px; /* Consistent max-width for forms */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 40px; /* Space at the bottom of the page */
+    border: 1px solid var(--border-color);
+}
+
+/* General form group margin (inherited from login_register.css but good to remember) */
+.form-container form > div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Styling for the checkbox group (reused from take_form.css pattern) */
+.checkbox-group {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fcfcfc; /* Slightly different background for the group */
+}
+
+.checkbox-group > label { /* Label for "Medicamentos a incluir:" */
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.checkbox-item {
+    display: flex; /* Use flexbox for checkbox and label alignment */
+    align-items: center;
+    margin-bottom: 10px; /* Space between each checkbox item */
+}
+
+.checkbox-item:last-child {
+    margin-bottom: 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 20px; /* Larger checkbox for easier clicking */
+    height: 20px;
+    accent-color: var(--primary-color); /* Color when checked */
+    margin-right: 10px; /* Space between checkbox and label */
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    font-size: 1.05em;
+    color: var(--text-color);
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+/* Style for "No medications available" message */
+.no-meds-available {
+    font-size: 0.95em;
+    color: var(--label-color);
+    font-style: italic;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.no-meds-available a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.no-meds-available a:hover {
+    text-decoration: underline;
+}
+
+/* Form action buttons (Add/Cancel) */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Reusing action button styles from other CSS files (e.g., profile.css or base.css)
+   Ensure these general action button styles are available: */
+
+.action-button {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    flex-grow: 1;
+    max-width: 200px;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+.secondary-button {
+    background-color: #6C757D;
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.secondary-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+}

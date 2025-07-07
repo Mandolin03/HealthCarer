@@ -1,0 +1,228 @@
+/* --- Medications Page Specific Styles --- */
+
+/* Adjusting H1 margin for the top of the page */
+h1 {
+    margin-bottom: 30px;
+}
+
+/* Container for add button and messages */
+.medication-controls {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 25px; /* Space before the table */
+}
+
+/* Link to add new medication */
+.medication-controls p a { /* Targeting the specific link */
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.medication-controls p a:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.medication-controls p a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.15);
+}
+
+/* Specific styling for the 'No medications' message */
+.no-medications-message {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--label-color);
+    margin-top: 20px;
+    margin-bottom: 0; /* Adjusted as it's part of controls div */
+    padding: 15px;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Table container for consistent styling */
+.table-container {
+    width: 100%;
+    max-width: 800px; /* Max width for the table container */
+    background-color: var(--card-background);
+    border-radius: 12px;
+    overflow: hidden; /* Ensures rounded corners on table shadow */
+    box-shadow: 0 8px 20px var(--shadow-color);
+    margin-bottom: 30px;
+}
+
+/* Table general styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0; /* Remove default table margin */
+}
+
+/* Table header styling */
+thead {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+th {
+    padding: 15px 20px; /* Increased padding for headers */
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+/* Table body rows */
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:last-child {
+    border-bottom: none; /* No border for the last row */
+}
+
+tbody tr:hover {
+    background-color: var(--background-color); /* Light hover effect */
+}
+
+td {
+    padding: 15px 20px; /* Consistent padding for cells */
+    font-size: 1em;
+    color: var(--text-color);
+    vertical-align: middle; /* Align content vertically */
+}
+
+/* Meter (Stock progress bar) styling */
+.stock-label {
+    display: flex; /* Use flexbox to align text and meter */
+    align-items: center;
+    gap: 10px; /* Space between "Stock XX" and the meter */
+    font-weight: 600; /* Make stock text a bit bolder */
+}
+
+meter {
+    flex-grow: 1; /* Allow meter to take available space */
+    max-width: 150px; /* Max width for the meter */
+    height: 20px;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    background-color: #e0e0e0; /* Background for empty part of the meter */
+}
+
+/* Meter fill color based on value for different browsers */
+meter::-webkit-meter-bar {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+meter::-webkit-meter-optimum-value {
+    background: #4CAF50; /* Green for optimum stock */
+    border-radius: 10px;
+}
+
+meter::-webkit-meter-suboptimum-value {
+    background: #FFD54F; /* Amber for low stock (not optimum) */
+    border-radius: 10px;
+}
+
+meter::-webkit-meter-even-less-good-value { /* For 'low' value */
+    background: #FF7043; /* Orange for even lower stock */
+    border-radius: 10px;
+}
+
+/* Action buttons within table cells */
+.actions-cell {
+    white-space: nowrap; /* Prevent buttons from wrapping */
+}
+
+.action-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: none;
+    margin-right: 5px; /* Space between buttons */
+}
+
+.action-button:last-child {
+    margin-right: 0;
+}
+
+/* Specific button colors */
+.details-button {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(210, 105, 30, 0.2);
+}
+
+.details-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(210, 105, 30, 0.3);
+}
+
+.edit-button {
+    background-color: #6C757D; /* A neutral grey for edit */
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
+}
+
+.edit-button:hover {
+    background-color: #5A6268; /* Darker grey */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.delete-button {
+    background-color: var(--error-color); /* Red for delete */
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(255, 99, 71, 0.2);
+}
+
+.delete-button:hover {
+    background-color: #CC3333; /* Darker red on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 99, 71, 0.3);
+}
+
+.delete-form {
+    display: inline-block; /* Align delete button with other actions */
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Home link at the bottom */
+.home-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.home-link:hover {
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+    text-decoration: underline;
+}

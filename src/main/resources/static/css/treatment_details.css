@@ -1,0 +1,135 @@
+/* --- Treatment Details Page Specific Styles --- */
+
+/* Adjusting H1 margin for the top of the page */
+body > h1 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+/* Main container for the treatment details (similar to medication_details.css) */
+.treatment-details-container {
+    background-color: var(--card-background);
+    padding: 35px 45px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 600px; /* Max width for the details card */
+    text-align: left;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 40px;
+    border: 1px solid var(--border-color);
+}
+
+/* Style for each detail item */
+.detail-item {
+    margin-bottom: 18px;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-item strong {
+    color: var(--primary-dark);
+    display: inline-block;
+    min-width: 180px; /* Adjust min-width for longer labels like "Frecuencia de Dispensación" */
+    margin-right: 10px;
+}
+
+.detail-item span {
+    font-weight: 500;
+}
+
+/* Styling for the list of included medications */
+.included-medications-list {
+    list-style: none; /* Remove default bullet points */
+    padding-left: 20px; /* Indent the list */
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.included-medications-list li {
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: var(--text-color);
+    position: relative;
+}
+
+.included-medications-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* Optional: Add a custom bullet point */
+.included-medications-list li::before {
+    content: '\2022'; /* Unicode for a bullet point */
+    color: var(--primary-dark);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    vertical-align: top;
+}
+
+/* Container for action buttons at the bottom of the details */
+.details-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Reusing action button styles (ensure these are defined in your base.css, profile.css, or a shared utility file) */
+.action-button {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.primary-button { /* You might not use this for details pages, but keeping it in context */
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(210, 105, 30, 0.3);
+}
+
+.secondary-button {
+    background-color: #6C757D;
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
+
+.secondary-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.edit-button { /* Reusing specific edit button style */
+    background-color: #6C757D; /* Neutral grey for edit */
+    color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
+}
+
+.edit-button:hover {
+    background-color: #5A6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}

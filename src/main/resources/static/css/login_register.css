@@ -1,0 +1,61 @@
+/* --- Form Container Style (Login & Register specific) --- */
+form {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    width: 100%;
+    max-width: 400px; /* Specific max-width for forms */
+    text-align: center;
+    animation: fadeInScale 0.8s ease-out forwards;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- Form Field Group Style --- */
+form > div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* --- Label Style (Forms) --- */
+label {
+    font-weight: 500;
+    color: var(--label-color);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+/* --- Submit Button Margin (Form specific) --- */
+button[type="submit"] {
+    margin-top: 10px;
+}
+
+/* --- Registration/Login Link Style --- */
+.register-link,
+p {
+    margin-top: 25px;
+    font-size: 1.05em;
+    color: var(--label-color);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* --- Link Style --- */
+.register-link a,
+p a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+/* --- Link Hover Style --- */
+.register-link a:hover,
+p a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-shadow: none;
+}

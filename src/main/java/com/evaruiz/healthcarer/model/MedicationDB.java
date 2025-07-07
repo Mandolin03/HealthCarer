@@ -1,13 +1,13 @@
 package com.evaruiz.healthcarer.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "medications")
@@ -18,7 +18,7 @@ public class MedicationDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private java.lang.Long id;
 
     @Column(nullable = false)
     private String name;
@@ -32,12 +32,14 @@ public class MedicationDB {
     @Column(nullable = false)
     private Float dose;
 
-    @ManyToMany
-    private Set<TreatmentDB> treatments = new HashSet<>();
+    private String imagePath;
 
-    @ManyToOne
+    @ManyToMany(mappedBy = "medications")
+    private List<TreatmentDB> treatments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserDB user;
 
-    @ManyToMany
-    private Set<TakeDB> takes = new HashSet<>();
+    @ManyToMany(mappedBy = "medications", fetch = FetchType.EAGER)
+    private List<TakeDB> takes = new ArrayList<>();
 }

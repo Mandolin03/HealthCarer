@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de tomas</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/takes_history.css"> </head>
+<body>
+{{> header}} <h1>Historial de tomas</h1>
+
+<div class="takes-controls">
+    <p><a href="/takes/new">Añadir toma</a></p>
+</div>
+
+
+
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Medicamentos tomados</th> <th>Acciones</th>
+            </tr>
+            </thead>
+            {{#takes}}
+            <tbody>
+                <tr>
+                    <td>{{date}}</td>
+                    <td>{{time}}</td>
+                    <td>
+                        <ul class="medication-list-in-take">
+                            {{#medications}}
+                                <li>{{name}} ({{dose}} mg)</li>
+                            {{/medications}}
+                        </ul>
+                    </td>
+                    <td class="actions-cell">
+                        <a href="/takes/{{id}}" class="action-button details-button">Detalles</a>
+                        <a href="/takes/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <form action="/takes/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar la toma?');" class="delete-form">
+                            <button type="submit" class="action-button delete-button">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            {{/takes}}
+        </table>
+        {{^takes}}
+            <p class="no-takes-message">No se han encontrado tomas registradas.</p>
+        {{/takes}}
+    </div>
+
+
+
+<br/>
+</body>
+</html>

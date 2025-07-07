@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/medication_details.css">
+</head>
+<body>
+{{> header}} <h1>Detalles de la medicación</h1>
+
+<div class="medication-details-container">
+    {{#medication}}
+        <div class="detail-item">
+            <strong>Nombre:</strong> <span>{{name}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Número de pastillas en posesión:</strong> <span>{{stock}}</span>
+        </div>
+        <div class="detail-item instructions-item">
+            <strong>Instrucciones de uso:</strong> <span>{{instructions}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Dosis de cada pastilla en mg:</strong> <span>{{dose}}</span>
+        </div>
+        <div class="detail-item image-section">
+            <strong>Imagen:</strong>
+            {{#imagePath}}
+                <img src="/medications/image/{{imagePath}}" alt="Imagen de {{name}}">
+            {{/imagePath}}
+            {{^imagePath}}
+                <p class="no-image-message">Imagen no disponible.</p>
+            {{/imagePath}}
+        </div>
+    {{/medication}}
+
+    <div class="details-actions">
+        <a href="/medications/" class="action-button secondary-button">Volver a mis medicamentos</a>
+    </div>
+</div>
+</body>
+</html>

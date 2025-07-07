@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la toma</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/take_details.css"> </head>
+<body>
+{{> header}} <h1>Detalles de la toma</h1>
+
+<div class="take-details-container">
+    {{#take}}
+        <div class="detail-item">
+            <strong>Fecha:</strong> <span>{{date}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Hora:</strong> <span>{{time}}</span>
+        </div>
+        <div class="detail-item">
+            <strong>Medicamentos tomados:</strong>
+            <ul class="taken-medications-list">
+                {{#medications}}
+                    <li>
+                        <span>{{name}}</span> (<span>{{dose}} mg</span>)
+                    </li>
+                {{/medications}}
+            </ul>
+        </div>
+    {{/take}}
+
+    <div class="details-actions">
+        <a href="/takes/" class="action-button secondary-button">Volver a Historial</a>
+    </div>
+</div>
+</body>
+</html>
