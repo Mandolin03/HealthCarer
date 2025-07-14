@@ -32,7 +32,7 @@ public class MedicationService {
 
     public void removeMedicationFromUser(Long id) {
         MedicationDB medication = medicationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No existe la medicación  con ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("No existe la medicación con ID: " + id));
 
         medication.setUser(null);
         medicationRepository.save(medication);

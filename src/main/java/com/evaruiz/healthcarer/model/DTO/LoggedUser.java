@@ -22,7 +22,7 @@ public class LoggedUser implements UserDetails {
     }
 
 
-    public java.lang.Long getId() {
+    public Long getId() {
         return user.getId();
     }
 
