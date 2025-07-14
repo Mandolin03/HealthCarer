@@ -94,7 +94,6 @@ class TakeServiceTest {
         Optional<TakeDB> actualTakeOptional = takeService.findById(nonExistentId);
 
         assertFalse(actualTakeOptional.isPresent());
-        assertTrue(actualTakeOptional.isEmpty());
         verify(takeRepository, times(1)).findById(nonExistentId);
         verifyNoMoreInteractions(takeRepository);
     }

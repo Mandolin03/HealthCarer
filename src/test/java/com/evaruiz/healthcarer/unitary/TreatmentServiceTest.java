@@ -92,7 +92,6 @@ class TreatmentServiceTest {
         Optional<TreatmentDB> actualTreatmentOptional = treatmentService.findById(nonExistentId);
 
         assertFalse(actualTreatmentOptional.isPresent());
-        assertTrue(actualTreatmentOptional.isEmpty());
         verify(treatmentRepository, times(1)).findById(nonExistentId);
         verifyNoMoreInteractions(treatmentRepository);
     }

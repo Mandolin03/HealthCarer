@@ -159,9 +159,7 @@ class MedicationServiceTest {
         Long nonExistentId = 999L;
         when(medicationRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            medicationService.removeMedicationFromUser(nonExistentId);
-        });
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> medicationService.removeMedicationFromUser(nonExistentId));
 
         assertEquals("No existe la medicación con ID: " + nonExistentId, thrown.getMessage());
         verify(medicationRepository, times(1)).findById(nonExistentId);
