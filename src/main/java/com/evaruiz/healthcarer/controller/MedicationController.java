@@ -96,6 +96,7 @@ public class MedicationController {
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
                                  @RequestParam("imageFile") MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
+        MedicationDB savedMed;
         Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
@@ -124,7 +125,12 @@ public class MedicationController {
             } else{
                 redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
             }
-            medicationService.saveMedication(newMedication);
+            savedMed = medicationService.saveMedication(newMedication);
+            if (savedMed == null) {
+                redirectAttributes.addFlashAttribute("error", "Error al guardar la medicación.");
+                return "redirect:/errorPage";
+            }
+
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("error", "Error al subir la imagen: " + e.getMessage());
             return "redirect:/errorPage";
@@ -132,7 +138,7 @@ public class MedicationController {
             redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al crear la medicación: " + e.getMessage());
             return "redirect:/errorPage";
         }
-        return "redirect:/medications/";
+        return "redirect:/medications/" + savedMed.getId();
     }
 
     @GetMapping("/edit/{id}")

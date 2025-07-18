@@ -26,8 +26,9 @@ public class MedicationService {
         return medicationRepository.findById(id);
     }
 
-    public void saveMedication(MedicationDB medication) {
+    public MedicationDB saveMedication(MedicationDB medication) {
         medicationRepository.save(medication);
+        return medication;
     }
 
     public void removeMedicationFromUser(Long id) {

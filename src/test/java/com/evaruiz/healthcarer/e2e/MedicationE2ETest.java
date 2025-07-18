@@ -1,0 +1,109 @@
+package com.evaruiz.healthcarer.e2e;
+
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
+import java.io.File;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class MedicationE2ETest {
+
+    @LocalServerPort
+    int port;
+
+    protected WebDriver driver;
+    protected WebDriverWait wait;
+
+    private static final String uploadFilePath = "src/main/resources/static/images/Producto1.jpg";
+    private static final File uploadFile = new File(uploadFilePath);
+    
+    @BeforeEach
+    public void setUpTest() {
+        ChromeOptions options = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.password_manager_leak_detection", false);
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+
+        options.addArguments("--allow-insecure-localhost");
+        options.addArguments("--headless");
+
+        driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+    }
+    @AfterEach
+    public void teardown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    private void login() {
+        driver.get("https://localhost:"+this.port+"/login");
+        driver.findElement(By.id("email")).sendKeys("bob@example.com");
+        driver.findElement(By.id("password")).sendKeys("password");
+        driver.findElement(By.id("login")).click();
+        wait.until(ExpectedConditions.titleIs("HealthCareR"));
+    }
+
+    @Test
+    public void getMedicationsE2E() {
+        login();
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        assertThat(driver.getTitle()).isEqualTo("Medicamentos");
+
+    }
+
+    @Test
+    public void getMedicationDetailsE2E() {
+        login();
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.className("details-button"))).click();
+
+        wait.until(ExpectedConditions.titleIs("Detalles"));
+        assertThat(driver.getTitle()).isEqualTo("Detalles");
+        assertThat(driver.findElement(By.id("name")).getText()).contains("Amoxicillin");
+        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
+
+
+    }
+    
+    @Test
+    public void createMedicationE2E() {
+        login();
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        driver.findElement(By.id("createMedication")).click();
+        wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
+        driver.findElement(By.id("name")).sendKeys("Aspirina");
+        driver.findElement(By.id("stock")).sendKeys("100");
+        driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
+        driver.findElement(By.id("dose")).sendKeys("2");
+        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
+        driver.findElement(By.id("create")).click();
+        wait.until(ExpectedConditions.titleIs("Detalles"));
+        assertThat(driver.findElement(By.id("name")).getText()).contains("Aspirina");
+
+    }
+
+
+
+}

@@ -13,7 +13,7 @@
 <div class="medication-details-container">
     {{#medication}}
         <div class="detail-item">
-            <strong>Nombre:</strong> <span>{{name}}</span>
+            <strong>Nombre:</strong> <span id="name">{{name}}</span>
         </div>
         <div class="detail-item">
             <strong>Número de pastillas en posesión:</strong> <span>{{stock}}</span>
@@ -27,7 +27,7 @@
         <div class="detail-item image-section">
             <strong>Imagen:</strong>
             {{#imagePath}}
-                <img src="/medications/image/{{imagePath}}" alt="Imagen de {{name}}">
+                <img id="photo" src="/medications/image/{{imagePath}}" alt="Imagen de {{name}}">
             {{/imagePath}}
             {{^imagePath}}
                 <p class="no-image-message">Imagen no disponible.</p>

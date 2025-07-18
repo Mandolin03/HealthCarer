@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,8 @@ public class DatabaseInitializer{
     private final MedicationRepository medicationRepository;
     private final TreatmentRepository treatmentRepository;
     private final TakeRepository takeRepository;
+    private static final String uploadFilePath = "src/main/resources/static/images/Producto1.jpg";
+    private static final File uploadFile = new File(uploadFilePath);
 
 
     @PostConstruct
@@ -56,7 +59,7 @@ public class DatabaseInitializer{
             paracetamol.setStock(100.0f);
             paracetamol.setInstructions("Take 2 pills every 6 hours with food.");
             paracetamol.setDose(500.0f);
-            paracetamol.setImagePath("images/paracetamol.png");
+            paracetamol.setImagePath(uploadFile.getAbsolutePath());
             paracetamol.setUser(userAlice);
 
 
@@ -65,7 +68,7 @@ public class DatabaseInitializer{
             ibuprofen.setStock(50.0f);
             ibuprofen.setInstructions("Take 1 pill every 8 hours after meals.");
             ibuprofen.setDose(200.0f);
-            ibuprofen.setImagePath("images/ibuprofen.png");
+            ibuprofen.setImagePath(uploadFile.getAbsolutePath());
             ibuprofen.setUser(userAlice);
 
 
@@ -74,7 +77,7 @@ public class DatabaseInitializer{
             amoxicillin.setStock(30.0f);
             amoxicillin.setInstructions("Take 1 capsule every 12 hours for 7 days.");
             amoxicillin.setDose(250.0f);
-            amoxicillin.setImagePath("images/amoxicillin.png");
+            amoxicillin.setImagePath(uploadFile.getAbsolutePath());
             amoxicillin.setUser(userBob);
 
             medicationRepository.save(paracetamol);
