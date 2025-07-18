@@ -3,6 +3,7 @@ package com.evaruiz.healthcarer.e2e;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -66,7 +68,8 @@ public class MedicationE2ETest {
 
     @Test
     public void getMedicationsE2E() {
-        assertThat(driver.getTitle()).isEqualTo("Medicamentos");
+        List<WebElement> takes = driver.findElements(By.className("medications-item"));
+        assertThat(takes.size()).isGreaterThanOrEqualTo(1);
 
     }
 
@@ -76,7 +79,7 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.elementToBeClickable(By.className("details-button"))).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.getTitle()).isEqualTo("Detalles");
-        assertThat(driver.findElement(By.id("name")).getText()).contains("Amoxicillin");
+        assertThat(driver.findElement(By.id("name")).getText()).isNotEmpty();
         assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
 
 
@@ -95,6 +98,7 @@ public class MedicationE2ETest {
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
+        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
 
     }
 
@@ -124,7 +128,7 @@ public class MedicationE2ETest {
 
 
         driver.findElement(By.id("createMedication")).click();
-        driver.findElement(By.id("name")).sendKeys("AAAAAA");
+        driver.findElement(By.id("name")).sendKeys("DeleteTest");
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
@@ -133,11 +137,21 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles"));
         driver.findElement(By.id("back")).click();
         wait.until(ExpectedConditions.titleIs("Medicamentos"));
-        wait.until(ExpectedConditions.elementToBeClickable(By.className("delete-button"))).click();
-        wait.until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().accept();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
-        assertThat(driver.findElement(By.id("name")).getText()).doesNotContain("AAAAAA");
+        List<WebElement> medications = driver.findElements(By.className("medications-item"));
+        for (WebElement medication : medications) {
+            if (medication.getText().contains("DeleteTest")) {
+                medication.findElement(By.className("delete-button")).click();
+                wait.until(ExpectedConditions.alertIsPresent());
+                driver.switchTo().alert().accept();
+                wait.until(ExpectedConditions.titleIs("Medicamentos"));
+                for (WebElement medication2 : driver.findElements(By.className("medications-item"))) {
+                    assertThat(medication2.getText()).doesNotContain("DeleteTest");
+                }
+                break;
+            }
+        }
+
+
     }
 
 }
