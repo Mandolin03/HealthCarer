@@ -45,6 +45,7 @@ public class MedicationE2ETest {
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        login();
     }
     @AfterEach
     public void teardown() {
@@ -59,22 +60,18 @@ public class MedicationE2ETest {
         driver.findElement(By.id("password")).sendKeys("password");
         driver.findElement(By.id("login")).click();
         wait.until(ExpectedConditions.titleIs("HealthCareR"));
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
     }
 
     @Test
     public void getMedicationsE2E() {
-        login();
-        driver.findElement(By.id("medications")).click();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
         assertThat(driver.getTitle()).isEqualTo("Medicamentos");
 
     }
 
     @Test
     public void getMedicationDetailsE2E() {
-        login();
-        driver.findElement(By.id("medications")).click();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.className("details-button"))).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
@@ -87,9 +84,7 @@ public class MedicationE2ETest {
     
     @Test
     public void createMedicationE2E() {
-        login();
-        driver.findElement(By.id("medications")).click();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+
         driver.findElement(By.id("createMedication")).click();
         wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
         driver.findElement(By.id("name")).sendKeys("Nuevo");
@@ -105,9 +100,7 @@ public class MedicationE2ETest {
 
     @Test
     public void updateMedicationE2E() {
-        login();
-        driver.findElement(By.id("medications")).click();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+
         wait.until(ExpectedConditions.elementToBeClickable(By.className("edit-button"))).click();
         wait.until(ExpectedConditions.titleIs("Editar Medicamento"));
         driver.findElement(By.id("name")).clear();
@@ -128,9 +121,8 @@ public class MedicationE2ETest {
 
     @Test
     public void deleteMedicationE2E() {
-        login();
-        driver.findElement(By.id("medications")).click();
-        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+
+
         driver.findElement(By.id("createMedication")).click();
         driver.findElement(By.id("name")).sendKeys("AAAAAA");
         driver.findElement(By.id("stock")).sendKeys("100");
