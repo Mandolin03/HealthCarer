@@ -77,7 +77,6 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Medicamentos"));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.className("details-button"))).click();
-
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.getTitle()).isEqualTo("Detalles");
         assertThat(driver.findElement(By.id("name")).getText()).contains("Amoxicillin");
@@ -93,17 +92,60 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Medicamentos"));
         driver.findElement(By.id("createMedication")).click();
         wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
-        driver.findElement(By.id("name")).sendKeys("Aspirina");
+        driver.findElement(By.id("name")).sendKeys("Nuevo");
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
         driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
-        assertThat(driver.findElement(By.id("name")).getText()).contains("Aspirina");
+        assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
 
     }
 
+    @Test
+    public void updateMedicationE2E() {
+        login();
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        wait.until(ExpectedConditions.elementToBeClickable(By.className("edit-button"))).click();
+        wait.until(ExpectedConditions.titleIs("Editar Medicamento"));
+        driver.findElement(By.id("name")).clear();
+        driver.findElement(By.id("name")).sendKeys("Updated");
+        driver.findElement(By.id("stock")).clear();
+        driver.findElement(By.id("stock")).sendKeys("200");
+        driver.findElement(By.id("instructions")).clear();
+        driver.findElement(By.id("instructions")).sendKeys("Updated instructions");
+        driver.findElement(By.id("dose")).clear();
+        driver.findElement(By.id("dose")).sendKeys("3");
+        driver.findElement(By.id("update")).click();
 
+        wait.until(ExpectedConditions.titleIs("Detalles"));
+        assertThat(driver.getTitle()).isEqualTo("Detalles");
+        assertThat(driver.findElement(By.id("name")).getText()).contains("Updated");
+
+    }
+
+    @Test
+    public void deleteMedicationE2E() {
+        login();
+        driver.findElement(By.id("medications")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        driver.findElement(By.id("createMedication")).click();
+        driver.findElement(By.id("name")).sendKeys("AAAAAA");
+        driver.findElement(By.id("stock")).sendKeys("100");
+        driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
+        driver.findElement(By.id("dose")).sendKeys("2");
+        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
+        driver.findElement(By.id("create")).click();
+        wait.until(ExpectedConditions.titleIs("Detalles"));
+        driver.findElement(By.id("back")).click();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        wait.until(ExpectedConditions.elementToBeClickable(By.className("delete-button"))).click();
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+        wait.until(ExpectedConditions.titleIs("Medicamentos"));
+        assertThat(driver.findElement(By.id("name")).getText()).doesNotContain("AAAAAA");
+    }
 
 }

@@ -210,7 +210,7 @@ public class MedicationController {
             }
         }
         medicationService.saveMedication(existingMedication);
-        return "redirect:/medications/{id}";
+        return "redirect:/medications/" + existingMedication.getId();
     }
 
     @PostMapping("/delete/{id}")

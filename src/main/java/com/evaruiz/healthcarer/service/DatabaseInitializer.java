@@ -22,7 +22,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Profile({"dev", "test"})
 public class DatabaseInitializer{
 
     private final PasswordEncoder passwordEncoder;
