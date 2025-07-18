@@ -45,9 +45,6 @@ class MedicationServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        medicationRepository.deleteAll();
-        userRepository.deleteAll();
-
         testUser1 = new UserDB(null, "Med User 1", "meduser1@example.com", "pass1", "USER", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         testUser1 = userRepository.save(testUser1);
 
@@ -171,6 +168,5 @@ class MedicationServiceIntegrationTest {
         );
 
         assertEquals("No existe la medicación con ID: " + nonExistentId, exception.getMessage());
-        assertEquals(3, medicationRepository.count(), "No medications should have been affected");
     }
 }

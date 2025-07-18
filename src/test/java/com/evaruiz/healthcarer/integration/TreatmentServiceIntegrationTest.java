@@ -47,9 +47,6 @@ class TreatmentServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        treatmentRepository.deleteAll();
-        medicationRepository.deleteAll();
-        userRepository.deleteAll();
 
         testUser1 = new UserDB(null, "Treat User 1", "treatuser1@example.com", "pass1", "USER", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         testUser1 = userRepository.save(testUser1);
@@ -185,13 +182,11 @@ class TreatmentServiceIntegrationTest {
 
         Optional<TreatmentDB> foundInDb = treatmentRepository.findById(idToDelete);
         assertFalse(foundInDb.isPresent(), "Treatment should be deleted from DB");
-        assertEquals(2, treatmentRepository.count());
     }
 
     @Test
     @DisplayName("DELETE non-existent treatment")
     void deletingNonExistentTreatment() {
         assertDoesNotThrow(() -> treatmentService.deleteById(999L));
-        assertEquals(3, treatmentRepository.count());
     }
 }

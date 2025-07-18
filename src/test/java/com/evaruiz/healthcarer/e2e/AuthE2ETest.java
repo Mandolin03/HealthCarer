@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -29,27 +31,42 @@ public class AuthE2ETest {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-
-
     @BeforeEach
     public void setUpTest() {
         ChromeOptions options = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.password_manager_leak_detection", false);
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
     }
 
     @AfterEach
     public void teardown() {
         if (driver != null) {
-            driver.manage().deleteAllCookies();
             driver.quit();
         }
     }
 
     @Test
-    @DisplayName("Registration and login")
+    @DisplayName("Login with existing user")
+    public void loginWithExistingUser() {
+        driver.get("https://localhost:" + this.port + "/login");
+        wait.until(ExpectedConditions.urlContains("/login"));
+        driver.findElement(By.id("email")).sendKeys("bob@example.com");
+        driver.findElement(By.id("password")).sendKeys("password");
+        driver.findElement(By.id("login")).click();
+        wait.until(ExpectedConditions.titleIs("HealthCareR"));
+
+    }
+
+    @Test
+    @DisplayName("Register and login with the new user")
     public void registerAndLogin(){
         String email = "test" + System.currentTimeMillis() + "@email.com";
         driver.get("https://localhost:" + this.port + "/register");
@@ -61,25 +78,18 @@ public class AuthE2ETest {
         driver.findElement(By.id("email")).sendKeys(email);
         driver.findElement(By.id("password")).sendKeys("testpass");
         driver.findElement(By.id("login")).click();
-        wait.until(ExpectedConditions.urlContains("/"));
+        wait.until(ExpectedConditions.titleIs("HealthCareR"));
         assertThat(driver.getTitle()).isEqualTo("HealthCareR");
     }
 
     @Test
-    @DisplayName("Registration with existing email")
+    @DisplayName("Register with existing email")
     public void registerWithExistingEmail(){
 
-        String email = "test2" + System.currentTimeMillis() + "@email.com";
-        driver.get("https://localhost:" + this.port + "/register");
-        driver.findElement(By.id("name")).sendKeys("test");
-        driver.findElement(By.id("email")).sendKeys(email);
-        driver.findElement(By.id("password")).sendKeys("testpass");
-        driver.findElement(By.id("register")).click();
-        wait.until(ExpectedConditions.urlContains("/login"));
         driver.get("https://localhost:" + this.port + "/register");
         driver.findElement(By.id("name")).sendKeys("test2");
-        driver.findElement(By.id("email")).sendKeys(email);
-        driver.findElement(By.id("password")).sendKeys("testpass2");
+        driver.findElement(By.id("email")).sendKeys("alice@example.com");
+        driver.findElement(By.id("password")).sendKeys("password");
         driver.findElement(By.id("register")).click();
         wait.until(ExpectedConditions.urlContains("/errorPage"));
         assertThat(driver.getTitle()).isEqualTo("Error");

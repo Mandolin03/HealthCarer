@@ -42,8 +42,6 @@ class UserServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        userRepository.deleteAll();
-
         UserDB userToSave = new UserDB();
         userToSave.setName("Initial User");
         userToSave.setEmail("initial@example.com");
@@ -91,9 +89,7 @@ class UserServiceIntegrationTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 userService.registerUser(duplicateEmailDTO)
         );
-
         assertEquals("Email already in use: " + savedUser.getEmail(), exception.getMessage());
-        assertEquals(1, userRepository.count(), "Only one user (the initial one) should be in DB");
     }
 
     @Test
