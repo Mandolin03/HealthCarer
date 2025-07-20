@@ -85,6 +85,7 @@ public class DatabaseInitializer{
             TreatmentDB headacheRelief = new TreatmentDB();
             headacheRelief.setName("Headache Relief");
             headacheRelief.setStartDate(LocalDateTime.of(2023, 1, 10, 0, 0));
+            headacheRelief.setEndDate(LocalDateTime.of(2023, 1, 12, 0, 0));
             headacheRelief.setLastTakenDate(LocalDateTime.of(2025, 7, 17, 14, 0));
             headacheRelief.setDispensingFrequency(6.0f);
             headacheRelief.setUser(userAlice);
