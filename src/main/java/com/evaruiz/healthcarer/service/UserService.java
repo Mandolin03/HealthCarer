@@ -57,5 +57,12 @@ public class UserService implements UserDetailsService {
     public UserDB findById(java.lang.Long id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
     }
+
+    public void removeTakeFromUser(Long currentUser, Long id) {
+        UserDB user = userRepository.findById(currentUser)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + currentUser));
+        user.getTakes().removeIf(take -> take.getId().equals(id));
+        userRepository.save(user);
+    }
 }
 

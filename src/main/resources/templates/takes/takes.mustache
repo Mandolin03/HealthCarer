@@ -10,13 +10,13 @@
 {{> header}} <h1>Historial de tomas</h1>
 
 <div class="takes-controls">
-    <p><a href="/takes/new">Añadir toma</a></p>
+    <p><a id="create-take" href="/takes/new">Añadir toma</a></p>
 </div>
 
 
 
 
-    <div class="table-container">
+    <div  class="table-container">
         <table>
             <thead>
             <tr>
@@ -27,8 +27,8 @@
             </thead>
             {{#takes}}
             <tbody>
-                <tr>
-                    <td>{{date}}</td>
+                <tr class="takes-item">
+                    <td class="take-date">{{date}}</td>
                     <td>{{time}}</td>
                     <td>
                         <ul class="medication-list-in-take">
