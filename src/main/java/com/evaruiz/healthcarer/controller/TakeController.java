@@ -164,7 +164,7 @@ public class TakeController {
         }
         newTake.setUser(newUser);
         takeService.save(newTake);
-        return "redirect:/takes/" + newTake.getId();
+        return "redirect:/takes/";
     }
 
 
@@ -204,12 +204,12 @@ public class TakeController {
             redirectAttributes.addFlashAttribute("error", "La toma que intenta editar no existe.");
             return "redirect:/errorPage";
         }
-        return "redirect:/takes/" + id;
+        return "redirect:/takes/";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteTake(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Long currentUser = getCurrentUser();
+    public String deleteTake(@PathVariable java.lang.Long id, RedirectAttributes redirectAttributes) {
+        java.lang.Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para eliminar una toma.");
             return "redirect:/errorPage";
@@ -219,7 +219,6 @@ public class TakeController {
             TakeDB take = takeOptional.get();
             if (take.getUser().getId().equals(currentUser)) {
                 takeService.deleteById(take.getId());
-                userService.removeTakeFromUser(currentUser, take.getId());
             } else {
                 redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar esta toma.");
                 return "redirect:/errorPage";

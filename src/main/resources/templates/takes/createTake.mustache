@@ -25,14 +25,14 @@
             {{/medications}}
             {{#medications}}
                 <div class="checkbox-item">
-                    <input type="checkbox" class="check-medication" id="medication_{{id}}" name="medications" value="{{id}}">
+                    <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}">
                     <label for="medication_{{id}}">{{name}}</label>
                 </div>
             {{/medications}}
         </div>
 
         <div class="form-actions">
-            <button id="create" type="submit" class="action-button primary-button">Añadir Toma</button>
+            <button type="submit" class="action-button primary-button">Añadir Toma</button>
             <a href="/takes/" class="action-button secondary-button">Cancelar</a>
         </div>
     </form>
