@@ -10,7 +10,6 @@ import com.evaruiz.healthcarer.repository.TreatmentRepository;
 import com.evaruiz.healthcarer.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
