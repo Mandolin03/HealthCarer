@@ -87,9 +87,11 @@ public class TreatmentE2ETest {
 
 
     @Test
-    public void updateTreatmentE2E() {
-
-        driver.findElement(By.className("edit-button")).click();
+    public void updateTreatmentE2E() throws InterruptedException {
+        Thread.sleep(500);
+        driver.findElement(By.className("details-button")).click();
+        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("edit-button")));
+        editButton.click();
         wait.until(ExpectedConditions.titleIs("Editar Tratamiento"));
 
         WebElement nameInput = driver.findElement(By.id("name"));
@@ -126,9 +128,11 @@ public class TreatmentE2ETest {
     }
 
     @Test
-    public void deleteTreatmentE2E() {
+    public void deleteTreatmentE2E() throws InterruptedException {
+        Thread.sleep(500);
         int takeCount = driver.findElements(By.className("treatment-item")).size() - 1;
-        driver.findElement(By.className("delete-button")).click();
+        WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("delete-button")));
+        deleteButton.click();
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
         wait.until(ExpectedConditions.titleIs("Lista de Tratamientos"));
