@@ -1,7 +1,9 @@
 package com.evaruiz.healthcarer.e2e;
 
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -70,5 +72,94 @@ public class TreatmentE2ETest {
     public void getTreatmentsE2E() {
         List<WebElement> treatments = driver.findElements(By.className("treatment-item"));
         assertThat(treatments.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void getTreatmentE2E(){
+        driver.findElement(By.className("details-button")).click();
+        wait.until(ExpectedConditions.titleIs("Detalles del Tratamiento"));
+        assertThat(driver.findElements(By.className("treatment-details-container")).size()).isEqualTo(1);
+        assertThat(driver.findElement(By.id("name")).getText()).isNotEmpty();
+        assertThat(driver.findElement(By.id("startDate")).getText()).isNotEmpty();
+        assertThat(driver.findElement(By.id("endDate")).getText()).isNotEmpty();
+        assertThat(driver.findElement(By.id("frequency")).getText()).isNotEmpty();
+        assertThat(driver.findElements(By.className("medications")).size()).isGreaterThanOrEqualTo(1);
+    }
+
+
+
+    @Test
+    public void updateTreatmentE2E() {
+
+        driver.findElement(By.className("edit-button")).click();
+        wait.until(ExpectedConditions.titleIs("Editar Tratamiento"));
+
+        WebElement nameInput = driver.findElement(By.id("name"));
+        nameInput.clear();
+        nameInput.sendKeys("Tratamiento Actualizado");
+
+        WebElement startDateInput = driver.findElement(By.id("startDate"));
+        startDateInput.clear();
+        startDateInput.sendKeys("11-11-2022" + Keys.TAB + "10:10");
+
+        WebElement endDateInput = driver.findElement(By.id("endDate"));
+        endDateInput.clear();
+        endDateInput.sendKeys("12-12-2022" + Keys.TAB + "10:10");
+
+        WebElement frequencyInput = driver.findElement(By.id("dispensingFrequency"));
+        frequencyInput.clear();
+        frequencyInput.sendKeys("48");
+
+        List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
+        assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
+        for (WebElement medication : takenMedications) {
+            driver.findElement(By.className("check-medication")).click();
+        }
+
+        driver.findElement(By.id("submit-treatment")).click();
+
+        wait.until(ExpectedConditions.titleIs("Detalles del Tratamiento"));
+
+        assertThat(driver.findElements(By.className("treatment-details-container")).size()).isEqualTo(1);
+        assertThat(driver.findElement(By.id("name")).getText()).isEqualTo("Tratamiento Actualizado");
+        assertThat(driver.findElement(By.id("startDate")).getText()).isEqualTo("11-11-2022");
+        assertThat(driver.findElement(By.id("endDate")).getText()).isEqualTo("12-12-2022");
+        assertThat(driver.findElement(By.id("frequency")).getText()).isEqualTo("48.0 horas");
+    }
+
+    @Test
+    public void deleteTreatmentE2E() {
+        int takeCount = driver.findElements(By.className("treatment-item")).size() - 1;
+        driver.findElement(By.className("delete-button")).click();
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+        wait.until(ExpectedConditions.titleIs("Lista de Tratamientos"));
+        assertThat(driver.findElements(By.className("treatment-item")).size()).isEqualTo(takeCount);
+    }
+
+    @Test
+    public void createTreatmentE2E() {
+        driver.findElement(By.id("create-treatment")).click();
+        wait.until(ExpectedConditions.titleIs("Añadir Nuevo Tratamiento"));
+
+        driver.findElement(By.id("name")).sendKeys("Tratamiento de Prueba");
+        driver.findElement(By.id("startDate")).sendKeys("10-01-2023" + Keys.TAB + "11:11");
+        driver.findElement(By.id("endDate")).sendKeys("12-01-2023" + Keys.TAB + "11:11");
+        driver.findElement(By.id("dispensingFrequency")).sendKeys("24");
+        List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
+        assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
+        for (WebElement medication : takenMedications) {
+            driver.findElement(By.className("check-medication")).click();
+        }
+
+        driver.findElement(By.id("submit-treatment")).click();
+
+        wait.until(ExpectedConditions.titleIs("Detalles del Tratamiento"));
+        assertThat(driver.findElements(By.className("treatment-details-container")).size()).isEqualTo(1);
+        assertThat(driver.findElement(By.id("name")).getText()).isEqualTo("Tratamiento de Prueba");
+        assertThat(driver.findElement(By.id("startDate")).getText()).isEqualTo("10-01-2023");
+        assertThat(driver.findElement(By.id("endDate")).getText()).isEqualTo("12-01-2023");
+        assertThat(driver.findElement(By.id("frequency")).getText()).isEqualTo("24.0 horas");
+        assertThat(driver.findElements(By.className("medications")).size()).isGreaterThanOrEqualTo(1);
     }
 }

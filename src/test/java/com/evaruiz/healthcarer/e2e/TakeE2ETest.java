@@ -76,7 +76,7 @@ public class TakeE2ETest {
     public void getTakeE2E() {
         driver.findElement(By.className("details-button")).click();
         wait.until(ExpectedConditions.titleIs("Detalles de la toma"));
-        assertThat(driver.findElements(By.className("taken-medications-list")).size()).isGreaterThanOrEqualTo(1);
+        assertThat(driver.findElements(By.className("taken-medications-list")).size()).isEqualTo(1);
         assertThat(driver.findElement(By.id("date")).getText()).isNotEmpty();
         assertThat(driver.findElement(By.id("time")).getText()).isNotEmpty();
     }
