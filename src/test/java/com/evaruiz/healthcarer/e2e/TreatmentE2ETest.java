@@ -1,9 +1,7 @@
 package com.evaruiz.healthcarer.e2e;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -112,7 +110,7 @@ public class TreatmentE2ETest {
 
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
-        for (WebElement medication : takenMedications) {
+        for (WebElement ignored : takenMedications) {
             driver.findElement(By.className("check-medication")).click();
         }
 
@@ -148,7 +146,7 @@ public class TreatmentE2ETest {
         driver.findElement(By.id("dispensingFrequency")).sendKeys("24");
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
-        for (WebElement medication : takenMedications) {
+        for (WebElement ignored : takenMedications) {
             driver.findElement(By.className("check-medication")).click();
         }
 

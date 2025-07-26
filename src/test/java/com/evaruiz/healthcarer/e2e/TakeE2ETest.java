@@ -91,7 +91,7 @@ public class TakeE2ETest {
 
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
-        for (WebElement medication : takenMedications) {
+        for (WebElement ignored : takenMedications) {
             driver.findElement(By.className("check-medication")).click();
         }
 
@@ -113,7 +113,7 @@ public class TakeE2ETest {
 
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
-        for (WebElement medication : takenMedications) {
+        for (WebElement ignored : takenMedications) {
             driver.findElement(By.className("check-medication")).click();
         }
 

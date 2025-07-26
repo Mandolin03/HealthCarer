@@ -40,7 +40,7 @@ public class DatabaseInitializer{
             userAlice.setName("Alice Smith");
             userAlice.setEmail("alice@example.com");
             userAlice.setEncodedPassword(passwordEncoder.encode("password"));
-            userAlice.setRole("ADMIN");
+            userAlice.setRole("USER");
 
 
             UserDB userBob = new UserDB();

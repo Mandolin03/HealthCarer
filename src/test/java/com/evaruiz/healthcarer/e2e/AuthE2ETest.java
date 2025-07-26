@@ -53,11 +53,19 @@ public class AuthE2ETest {
         }
     }
 
+    private void login() {
+        driver.get("https://localhost:"+this.port+"/login");
+        driver.findElement(By.id("email")).sendKeys("bob@example.com");
+        driver.findElement(By.id("password")).sendKeys("password");
+        driver.findElement(By.id("login")).click();
+        wait.until(ExpectedConditions.titleIs("HealthCareR"));
+    }
+
     @Test
     @DisplayName("Login with existing user")
     public void loginWithExistingUser() {
         driver.get("https://localhost:" + this.port + "/login");
-        wait.until(ExpectedConditions.urlContains("/login"));
+        wait.until(ExpectedConditions.titleIs("Inicio de sesión"));
         driver.findElement(By.id("email")).sendKeys("bob@example.com");
         driver.findElement(By.id("password")).sendKeys("password");
         driver.findElement(By.id("login")).click();
@@ -74,7 +82,7 @@ public class AuthE2ETest {
         driver.findElement(By.id("email")).sendKeys(email);
         driver.findElement(By.id("password")).sendKeys("testpass");
         driver.findElement(By.id("register")).click();
-        wait.until(ExpectedConditions.urlContains("/login"));
+        wait.until(ExpectedConditions.titleIs("Inicio de sesión"));
         driver.findElement(By.id("email")).sendKeys(email);
         driver.findElement(By.id("password")).sendKeys("testpass");
         driver.findElement(By.id("login")).click();
@@ -91,8 +99,45 @@ public class AuthE2ETest {
         driver.findElement(By.id("email")).sendKeys("alice@example.com");
         driver.findElement(By.id("password")).sendKeys("password");
         driver.findElement(By.id("register")).click();
-        wait.until(ExpectedConditions.urlContains("/errorPage"));
-        assertThat(driver.getTitle()).isEqualTo("Error");
+        wait.until(ExpectedConditions.titleIs("Error"));
         assertThat(driver.findElement(By.id("error")).getText()).isEqualTo("El email ya está en uso");
     }
+
+    @Test
+    @DisplayName("Logout redirects to login page")
+    public void logoutRedirectsToLoginPage() {
+        login();
+        driver.findElement(By.id("logout")).click();
+        wait.until(ExpectedConditions.titleIs("Inicio de sesión"));
+        assertThat(driver.getTitle()).isEqualTo("Inicio de sesión");
+    }
+
+    @Test
+    @DisplayName("Profile page is accessible after login")
+    public void profilePageAccessibleAfterLogin() {
+       login();
+        driver.findElement(By.id("profile")).click();
+        wait.until(ExpectedConditions.titleIs("Perfil"));
+        assertThat(driver.findElement(By.id("profile-name")).getText()).isEqualTo("Bob Johnson");
+        assertThat(driver.findElement(By.id("profile-email")).getText()).isEqualTo("bob@example.com");
+    }
+
+    @Test
+    @DisplayName("Edit profile updates user information")
+    public void editProfileUpdatesUserInformation() {
+        login();
+        driver.findElement(By.id("profile")).click();
+        wait.until(ExpectedConditions.titleIs("Perfil"));
+        driver.findElement(By.id("editProfile")).click();
+        wait.until(ExpectedConditions.titleIs("Editar Perfil"));
+        driver.findElement(By.id("name")).clear();
+        driver.findElement(By.id("name")).sendKeys("Updated Bob");
+        driver.findElement(By.id("email")).clear();
+        driver.findElement(By.id("email")).sendKeys("updatedbob@example.com");
+        driver.findElement(By.id("update")).click();
+        wait.until(ExpectedConditions.titleIs("Perfil"));
+        assertThat(driver.findElement(By.id("profile-name")).getText()).isEqualTo("Updated Bob");
+        assertThat(driver.findElement(By.id("profile-email")).getText()).isEqualTo("updatedbob@example.com");
+    }
+
 }
