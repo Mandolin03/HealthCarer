@@ -23,4 +23,4 @@ jobs:
       - name: Instalar dependencias de Maven
         run: mvn clean install -DskipTests
       - name: Ejecutar tests de Selenium E2E
-        run: mvn test -Dtest="**/e2e/*"
+        run: mvn test -Dtest="**/e2e/*" -Dspring.profiles.active=test

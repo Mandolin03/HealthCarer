@@ -3,10 +3,7 @@ package com.evaruiz.healthcarer.e2e;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -128,13 +125,12 @@ public class TreatmentE2ETest {
     }
 
     @Test
-    public void deleteTreatmentE2E() throws InterruptedException {
-        Thread.sleep(500);
+    public void deleteTreatmentE2E(){
         int takeCount = driver.findElements(By.className("treatment-item")).size() - 1;
-        WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("delete-button")));
-        deleteButton.click();
-        wait.until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().accept();
+        WebElement deleteButton = driver.findElement(By.id("delete"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteButton);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent()).accept();
         wait.until(ExpectedConditions.titleIs("Lista de Tratamientos"));
         assertThat(driver.findElements(By.className("treatment-item")).size()).isEqualTo(takeCount);
     }
