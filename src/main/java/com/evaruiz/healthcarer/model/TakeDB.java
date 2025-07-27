@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class TakeDB {
             joinColumns = @JoinColumn(name = "take_id"),
             inverseJoinColumns = @JoinColumn(name = "medication_id")
     )
-    private List<MedicationDB> medications;
+    private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     private UserDB user;

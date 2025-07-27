@@ -13,7 +13,7 @@
 <h1>Mis medicamentos</h1>
 
 <div class="medication-controls">
-    <p><a href="/medications/new">Añadir medicamento</a></p>
+    <p><a id="createMedication" href="/medications/new">Añadir medicamento</a></p>
 
 
 </div>
@@ -29,8 +29,8 @@
             {{#medications}}
             <tbody>
 
-                <tr>
-                    <td>{{name}}</td>
+                <tr class="medications-item">
+                    <td id="name">{{name}}</td>
                     <td>
                         <label class="stock-label">{{stock}}
                             <meter value="{{stock}}" min="0" max="30" low="7" high="12" optimum="20"></meter>

@@ -62,8 +62,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "Los datos introducidos no son válidos");
             return "redirect:/errorPage";
         }
-        String normalizedEmail = newUser.email().trim();
-        if (userService.findByEmail(normalizedEmail)) {
+        if (userService.findByEmail(newUser.email())) {
             redirectAttributes.addFlashAttribute("error", "El email ya está en uso");
             return "redirect:/errorPage";
         }

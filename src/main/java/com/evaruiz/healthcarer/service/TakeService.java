@@ -28,4 +28,5 @@ public class TakeService {
     public void deleteById(Long id) {
         takeRepository.deleteById(id);
     }
+
 }

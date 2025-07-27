@@ -26,14 +26,14 @@
             {{/medicationDTOs}}
             {{#medicationDTOs}}
                 <div class="checkbox-item">
-                    <input type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}" {{#selected}}checked{{/selected}}/>
+                    <input class="check-medication" type="checkbox" id="medication_{{id}}" name="medications" value="{{id}}" {{#selected}}checked{{/selected}}/>
                     <label for="medication_{{id}}">{{name}}</label>
                 </div>
             {{/medicationDTOs}}
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="action-button primary-button">Guardar Cambios</button>
+            <button id="edit" type="submit" class="action-button primary-button">Guardar Cambios</button>
             <a href="/takes/" class="action-button secondary-button">Cancelar</a>
         </div>
     </form>
