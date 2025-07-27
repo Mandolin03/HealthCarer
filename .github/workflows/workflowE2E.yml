@@ -22,5 +22,29 @@ jobs:
           cache: 'maven'
       - name: Instalar dependencias de Maven
         run: mvn clean install -DskipTests
+      - name: Iniciar la aplicación Spring Boot en segundo plano
+        run: |
+          java -jar target/*.jar --spring.profiles.active=test &
+          # Capture the process ID
+          echo $! > app.pid
+        working-directory: .
+
+      - name: Esperar a que la aplicación Spring Boot esté lista
+        run: |
+          timeout 120 bash -c 'until curl -sS --fail http://localhost:8443/health; do echo "App not ready yet..."; sleep 5; done'
+
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
       - name: Ejecutar tests de Selenium E2E
         run: mvn test -Dtest="**/e2e/*" -Dspring.profiles.active=test
+        env:
+          APP_BASE_URL: http://localhost:8443
+
+      - name: Detener la aplicación Spring Boot en segundo plano
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill $(cat app.pid) || true # kill the process, '|| true' to prevent failure if process is already gone
+            rm app.pid
+          fi
