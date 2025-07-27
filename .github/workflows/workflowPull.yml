@@ -1,11 +1,9 @@
-name: WorkflowUnitary
+name: Pruebas unitarias/integración/e2e en pull-requests
 
 on:
-  push:
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-    branches-ignore:
+  workflow_dispatch:
+  pull_request:
+    branches:
       - main
 
 jobs:
@@ -19,8 +17,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '22'
-          cache: 'maven'
-      - name: Instalar dependencias de Maven
-        run: mvn clean install -DskipTests
       - name: Ejecutar tests unitarios
         run: mvn test -Dtest="**/unitary/*"
+      - name: Ejecutar tests de integración
+        run: mvn test -Dtest="**/integration/*"
+      - name: Ejecutar tests de sistema
+        run: mvn test -Dtest="/e2e/selenium/*"
