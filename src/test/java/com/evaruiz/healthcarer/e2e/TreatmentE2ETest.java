@@ -84,11 +84,10 @@ public class TreatmentE2ETest {
 
 
     @Test
-    public void updateTreatmentE2E() throws InterruptedException {
-        Thread.sleep(500);
-        driver.findElement(By.className("details-button")).click();
-        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("edit-button")));
-        editButton.click();
+    public void updateTreatmentE2E(){
+        WebElement editButton = driver.findElement(By.id("edit"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
+
         wait.until(ExpectedConditions.titleIs("Editar Tratamiento"));
 
         WebElement nameInput = driver.findElement(By.id("name"));

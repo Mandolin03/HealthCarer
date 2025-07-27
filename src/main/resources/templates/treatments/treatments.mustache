@@ -43,7 +43,7 @@
                     </td>
                     <td class="actions-cell">
                         <a href="/treatments/{{id}}" class="action-button details-button">Detalles</a>
-                        <a href="/treatments/edit/{{id}}" class="action-button edit-button">Editar</a>
+                        <a id="edit" href="/treatments/edit/{{id}}" class="action-button edit-button">Editar</a>
                         <form action="/treatments/delete/{{id}}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar este tratamiento?');" class="delete-form">
                             <button id="delete" type="submit" class="action-button delete-button">Borrar</button>
                         </form>
