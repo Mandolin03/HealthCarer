@@ -22,4 +22,4 @@ jobs:
       - name: Ejecutar tests de integración
         run: mvn test -Dtest="**/integration/*"
       - name: Ejecutar tests de sistema
-        run: mvn test -Dtest="/e2e/selenium/*"
+        run: mvn test -Dtest="**/e2e/*"
