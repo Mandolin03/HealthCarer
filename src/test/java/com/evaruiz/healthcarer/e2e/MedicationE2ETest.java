@@ -30,7 +30,7 @@ public class MedicationE2ETest {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    private static final String uploadFilePath = "src/main/resources/static/images/Producto1.jpg";
+    private static final String uploadFilePath = "uploads/Producto1.jpg";
     private static final File uploadFile = new File(uploadFilePath);
     
     @BeforeEach
@@ -41,14 +41,9 @@ public class MedicationE2ETest {
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", prefs);
-
+        options.addArguments("--lang=en-US");
         options.addArguments("--allow-insecure-localhost");
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
+        //options.addArguments("--headless");
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -99,9 +94,11 @@ public class MedicationE2ETest {
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
+        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
+        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
 
     }
 
