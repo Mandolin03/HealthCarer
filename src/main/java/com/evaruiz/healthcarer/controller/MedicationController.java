@@ -207,7 +207,7 @@ public class MedicationController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMedication(@PathVariable java.lang.Long id,
+    public String deleteMedication(@PathVariable Long id,
                                    RedirectAttributes redirectAttributes) {
         Long currentUser = getCurrentUser();
         if (currentUser == null) {

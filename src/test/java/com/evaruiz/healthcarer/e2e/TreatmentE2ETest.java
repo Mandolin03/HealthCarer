@@ -37,7 +37,8 @@ public class TreatmentE2ETest {
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", prefs);
-
+        options.setBrowserVersion("138.0.7204.169");
+        options.addArguments("--lang=es");
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");
