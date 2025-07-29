@@ -1,5 +1,7 @@
 package com.evaruiz.healthcarer.service;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,9 +16,18 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-    private final String UPLOAD_DIRECTORY = "/uploads/";
+    private String UPLOAD_DIRECTORY = "";
+
+    public void setUploadDirectory() {
+        if(System.getProperty("profile") != null && System.getProperty("profile").equals("test")) {
+            this.UPLOAD_DIRECTORY = "uploads/";
+        } else{
+            this.UPLOAD_DIRECTORY = "/uploads/";
+        }
+    }
 
     public String uploadImage(MultipartFile imageFile) throws IOException {
+        setUploadDirectory();
         String originalFileName = imageFile.getOriginalFilename();
         String fileExtension = "";
         int dotIndex = originalFileName != null ? originalFileName.lastIndexOf('.') : -1;
@@ -34,6 +45,7 @@ public class ImageService {
     }
 
     public void deleteImageFile(String imagePath) throws IOException {
+        setUploadDirectory();
         if (imagePath == null || imagePath.isEmpty()) {
             return;
         }
