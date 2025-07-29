@@ -30,6 +30,10 @@
         <java.version>21</java.version>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
+        <sonar.projectKey>Healthcarer</sonar.projectKey>
+        <sonar.projectName>Healthcarer</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.token>sqp_5ff85f105d2b87128e0e135477bf30bfcf782c51</sonar.token>
     </properties>
     <dependencies>
         <dependency>
@@ -142,13 +146,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.10.0.2594</version>
-
-
             </plugin>
         </plugins>
 

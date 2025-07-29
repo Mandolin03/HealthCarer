@@ -39,7 +39,7 @@ public class TreatmentE2ETest {
         options.setExperimentalOption("prefs", prefs);
 
         options.addArguments("--allow-insecure-localhost");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");
@@ -90,6 +90,7 @@ public class TreatmentE2ETest {
 
     @Test
     public void updateTreatmentE2E(){
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("edit")));
         WebElement editButton = driver.findElement(By.id("edit"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
 
@@ -101,11 +102,11 @@ public class TreatmentE2ETest {
 
         WebElement startDateInput = driver.findElement(By.id("startDate"));
         startDateInput.clear();
-        startDateInput.sendKeys("11-11-2022" + Keys.TAB + "10:10");
+        startDateInput.sendKeys("11-11-2022" + Keys.TAB + "10:10" + Keys.TAB + "10:10");
 
         WebElement endDateInput = driver.findElement(By.id("endDate"));
         endDateInput.clear();
-        endDateInput.sendKeys("12-12-2022" + Keys.TAB + "10:10");
+        endDateInput.sendKeys("12-12-2022" + Keys.TAB + "10:10" + Keys.TAB + "10:10");
 
         WebElement frequencyInput = driver.findElement(By.id("dispensingFrequency"));
         frequencyInput.clear();
