@@ -43,7 +43,7 @@ public class MedicationE2ETest {
         options.setExperimentalOption("prefs", prefs);
         options.addArguments("--lang=en-US");
         options.addArguments("--allow-insecure-localhost");
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
