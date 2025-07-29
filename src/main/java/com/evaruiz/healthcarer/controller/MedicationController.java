@@ -54,7 +54,7 @@ public class MedicationController {
     }
 
     @GetMapping("/{id}")
-    public String showMedicationDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String showMedicationDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu medicación.");
@@ -94,7 +94,7 @@ public class MedicationController {
 
     @PostMapping("/save")
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
-                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                 @RequestParam(value = "imageFile") MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
         MedicationDB savedMed;
         Long currentUser = getCurrentUser();
