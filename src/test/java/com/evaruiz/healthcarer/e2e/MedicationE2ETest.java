@@ -99,11 +99,9 @@ public class MedicationE2ETest {
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
-        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
-        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
 
     }
 

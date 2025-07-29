@@ -39,7 +39,7 @@ public class TreatmentE2ETest {
         options.setExperimentalOption("prefs", prefs);
 
         options.addArguments("--allow-insecure-localhost");
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");

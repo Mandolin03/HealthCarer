@@ -122,8 +122,6 @@ public class MedicationController {
             if (imageFile != null && !imageFile.isEmpty()) {
                 String imagePath = imageService.uploadImage(imageFile);
                 newMedication.setImagePath(imagePath);
-            } else{
-                redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
             }
             savedMed = medicationService.saveMedication(newMedication);
             if (savedMed == null) {

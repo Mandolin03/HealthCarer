@@ -45,13 +45,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(normalizedEmail).isPresent();
     }
 
-    public void updateUserProfile(UserDB user, RegisterUserDTO updatedUser) {
+    public UserDB updateUserProfile(UserDB user, RegisterUserDTO updatedUser) {
         user.setName(updatedUser.name());
         user.setEmail(updatedUser.email().trim());
         if (updatedUser.password() != null && !updatedUser.password().isEmpty()) {
             user.setEncodedPassword(passwordEncoder.encode(updatedUser.password()));
         }
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public UserDB findById(java.lang.Long id) {
