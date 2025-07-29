@@ -94,7 +94,7 @@ public class MedicationController {
 
     @PostMapping("/save")
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
-                                 @RequestParam("imageFile") MultipartFile imageFile,
+                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
         MedicationDB savedMed;
         Long currentUser = getCurrentUser();
@@ -183,20 +183,15 @@ public class MedicationController {
         existingMedication.setStock(medication.getStock());
         existingMedication.setInstructions(medication.getInstructions());
         existingMedication.setDose(medication.getDose());
-        if (deleteExistingImage) {
-            if (imageFile == null || imageFile.isEmpty()) {
-                redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
-            }
+        if (deleteExistingImage && existingMedication.getImagePath() != null) {
             try {
-                if (existingMedication.getImagePath() != null && !existingMedication.getImagePath().isEmpty()) {
+                if (imageFile != null && !imageFile.isEmpty()) {
                     imageService.deleteImageFile(existingMedication.getImagePath());
                 }
                 try {
                     if (imageFile != null && !imageFile.isEmpty()) {
                         String imagePath = imageService.uploadImage(imageFile);
                         existingMedication.setImagePath(imagePath);
-                    } else{
-                        redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
                     }
                 } catch (IOException e) {
                     redirectAttributes.addFlashAttribute("error", "Error al subir la imagen: " + e.getMessage());
@@ -207,8 +202,8 @@ public class MedicationController {
                 return "redirect:/errorPage";
             }
         }
-        medicationService.saveMedication(existingMedication);
-        return "redirect:/medications/" + existingMedication.getId();
+        MedicationDB m = medicationService.saveMedication(existingMedication);
+        return "redirect:/medications/" + m.getId();
     }
 
     @PostMapping("/delete/{id}")
