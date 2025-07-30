@@ -94,7 +94,7 @@ public class MedicationController {
 
     @PostMapping("/save")
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
-                                 @RequestParam(value = "imageFile") MultipartFile imageFile,
+                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
         MedicationDB savedMed;
         Long currentUser = getCurrentUser();

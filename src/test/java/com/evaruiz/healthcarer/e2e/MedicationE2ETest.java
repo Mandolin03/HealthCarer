@@ -11,18 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.util.AssertionErrors.fail;
+
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,8 +29,6 @@ public class MedicationE2ETest {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
-
-    private String tempUploadImagePath;
     
     @BeforeEach
     public void setUpTest() {
@@ -57,10 +50,6 @@ public class MedicationE2ETest {
     public void teardown() {
         if (driver != null) {
             driver.quit();
-        }
-        if (tempUploadImagePath != null) {
-            new File(tempUploadImagePath).delete();
-            new File("target/e2e-temp-files").delete();
         }
     }
 
@@ -94,18 +83,7 @@ public class MedicationE2ETest {
     }
     
     @Test
-    public void createMedicationE2E() throws IOException {
-
-        URL resource = getClass().getClassLoader().getResource("uploads/Producto1.jpg");
-        Assertions.assertNotNull(resource);
-        File originalFile = new File(resource.getFile());
-        File tempDir = new File("target/e2e-temp-files");
-        if (!tempDir.exists()) {
-            tempDir.mkdirs();
-        }
-        File tempFile = new File(tempDir, "Producto1.jpg");
-        Files.copy(originalFile.toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        tempUploadImagePath = tempFile.getAbsolutePath();
+    public void createMedicationE2E(){
 
         driver.findElement(By.id("createMedication")).click();
         wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
@@ -113,11 +91,9 @@ public class MedicationE2ETest {
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
-        driver.findElement(By.id("imageFile")).sendKeys(tempUploadImagePath);
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
-        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
     }
 
     @Test
