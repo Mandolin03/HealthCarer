@@ -137,6 +137,8 @@ public class AuthE2ETest {
         driver.findElement(By.id("email")).sendKeys("updatedbob@example.com");
         driver.findElement(By.id("update")).click();
         wait.until(ExpectedConditions.titleIs("Perfil"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("profile-name")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("profile-email")));
         assertThat(driver.findElement(By.id("profile-name")).getText()).isEqualTo("Updated Bob");
         assertThat(driver.findElement(By.id("profile-email")).getText()).isEqualTo("updatedbob@example.com");
     }
