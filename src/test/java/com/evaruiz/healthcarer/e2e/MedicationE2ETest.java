@@ -86,7 +86,7 @@ public class MedicationE2ETest {
     }
     
     @Test
-    public void createMedicationE2E() {
+    public void createMedicationE2E(){
 
         driver.findElement(By.id("createMedication")).click();
         wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
@@ -99,7 +99,6 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
         assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
-
     }
 
     @Test
