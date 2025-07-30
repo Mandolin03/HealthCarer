@@ -77,7 +77,8 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.getTitle()).isEqualTo("Detalles");
         assertThat(driver.findElement(By.id("name")).getText()).isNotEmpty();
-        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
+        assertThat(driver.findElement(By.id("stock")).getText()).isNotEmpty();
+        assertThat(driver.findElement(By.id("instructions")).getText()).isNotEmpty();
 
 
     }
