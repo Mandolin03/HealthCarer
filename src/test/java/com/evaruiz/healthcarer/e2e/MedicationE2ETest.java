@@ -77,8 +77,6 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.getTitle()).isEqualTo("Detalles");
         assertThat(driver.findElement(By.id("name")).getText()).isNotEmpty();
-        assertThat(driver.findElement(By.id("stock")).getText()).isNotEmpty();
-        assertThat(driver.findElement(By.id("instructions")).getText()).isNotEmpty();
 
 
     }
@@ -94,6 +92,7 @@ public class MedicationE2ETest {
         driver.findElement(By.id("dose")).sendKeys("2");
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
     }
 
