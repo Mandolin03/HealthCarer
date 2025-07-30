@@ -131,8 +131,8 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
             return "redirect:/errorPage";
         }
-        userService.updateUserProfile(newUser, updatedUser);
-        return "redirect:/users/" + id;
+        UserDB u = userService.updateUserProfile(newUser, updatedUser);
+        return "redirect:/users/" + u.getId();
     }
 
 }

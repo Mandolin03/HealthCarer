@@ -173,8 +173,8 @@ public class TreatmentController {
             return "redirect:/errorPage";
         }
         newTreatment.setUser(newUser);
-        treatmentService.save(newTreatment);
-        return "redirect:/treatments/" + newTreatment.getId();
+        TreatmentDB t = treatmentService.save(newTreatment);
+        return "redirect:/treatments/" + t.getId();
     }
 
     @PostMapping("/update/{id}")

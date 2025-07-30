@@ -69,8 +69,8 @@ public class TakeController {
     }
 
     @GetMapping("/{id}")
-    public String showTakeDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
-        java.lang.Long currentUser = getCurrentUser();
+    public String showTakeDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu toma.");
             return "redirect:/errorPage";
@@ -94,7 +94,7 @@ public class TakeController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model, RedirectAttributes redirectAttributes) {
-        java.lang.Long currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una toma.");
             return "redirect:/errorPage";
@@ -105,8 +105,8 @@ public class TakeController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
-        java.lang.Long currentUser = getCurrentUser();
+    public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una toma.");
             return "redirect:/errorPage";
@@ -131,7 +131,7 @@ public class TakeController {
 
     @PostMapping("/save")
     public String saveTake(CreateTakeDTO take, RedirectAttributes redirectAttributes) {
-        java.lang.Long currentUser = getCurrentUser();
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para guardar una toma.");
             return "redirect:/errorPage";
@@ -170,8 +170,8 @@ public class TakeController {
 
 
     @PostMapping("/edit/{id}")
-    public String editTake(@PathVariable java.lang.Long id, CreateTakeDTO take, RedirectAttributes redirectAttributes) {
-        java.lang.Long currentUser = getCurrentUser();
+    public String editTake(@PathVariable Long id, CreateTakeDTO take, RedirectAttributes redirectAttributes) {
+        Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar una toma.");
             return "redirect:/errorPage";

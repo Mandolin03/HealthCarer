@@ -37,14 +37,9 @@ public class TreatmentE2ETest {
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", prefs);
-
+        options.addArguments("--lang=en-US");
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -101,11 +96,11 @@ public class TreatmentE2ETest {
 
         WebElement startDateInput = driver.findElement(By.id("startDate"));
         startDateInput.clear();
-        startDateInput.sendKeys("11-11-2022" + Keys.TAB + "10:10");
+        startDateInput.sendKeys("11-11-2022" + Keys.TAB + "10:10A");
 
         WebElement endDateInput = driver.findElement(By.id("endDate"));
         endDateInput.clear();
-        endDateInput.sendKeys("12-12-2022" + Keys.TAB + "10:10");
+        endDateInput.sendKeys("12-12-2022" + Keys.TAB + "10:10A");
 
         WebElement frequencyInput = driver.findElement(By.id("dispensingFrequency"));
         frequencyInput.clear();
@@ -145,8 +140,8 @@ public class TreatmentE2ETest {
         wait.until(ExpectedConditions.titleIs("Añadir Nuevo Tratamiento"));
 
         driver.findElement(By.id("name")).sendKeys("Tratamiento de Prueba");
-        driver.findElement(By.id("startDate")).sendKeys("10-01-2023" + Keys.TAB + "11:11");
-        driver.findElement(By.id("endDate")).sendKeys("12-01-2023" + Keys.TAB + "11:11");
+        driver.findElement(By.id("startDate")).sendKeys("10-01-2023" + Keys.TAB + "11:11A");
+        driver.findElement(By.id("endDate")).sendKeys("12-01-2023" + Keys.TAB + "11:11A");
         driver.findElement(By.id("dispensingFrequency")).sendKeys("24");
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
@@ -159,8 +154,8 @@ public class TreatmentE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles del Tratamiento"));
         assertThat(driver.findElements(By.className("treatment-details-container")).size()).isEqualTo(1);
         assertThat(driver.findElement(By.id("name")).getText()).isEqualTo("Tratamiento de Prueba");
-        assertThat(driver.findElement(By.id("startDate")).getText()).isEqualTo("10-01-2023");
-        assertThat(driver.findElement(By.id("endDate")).getText()).isEqualTo("12-01-2023");
+        assertThat(driver.findElement(By.id("startDate")).getText()).isEqualTo("01-10-2023");
+        assertThat(driver.findElement(By.id("endDate")).getText()).isEqualTo("01-12-2023");
         assertThat(driver.findElement(By.id("frequency")).getText()).isEqualTo("24.0 horas");
         assertThat(driver.findElements(By.className("medications")).size()).isGreaterThanOrEqualTo(1);
     }

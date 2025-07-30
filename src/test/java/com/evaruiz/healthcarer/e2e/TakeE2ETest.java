@@ -39,7 +39,7 @@ public class TakeE2ETest {
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", prefs);
-
+        options.addArguments("--lang=en-US");
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");
@@ -92,7 +92,7 @@ public class TakeE2ETest {
         wait.until(ExpectedConditions.titleIs("Añadir Nueva Toma"));
 
         WebElement dateInput = driver.findElement(By.id("date"));
-        dateInput.sendKeys("10-12-2020" + Keys.TAB + "12:15");
+        dateInput.sendKeys("10-12-2020" + Keys.TAB + "10:15A");
 
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);
@@ -103,8 +103,8 @@ public class TakeE2ETest {
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles de la toma"));
 
-        assertThat(driver.findElement(By.id("date")).getText()).isEqualTo("2020-12-10");
-        assertThat(driver.findElement(By.id("time")).getText()).isEqualTo("12:15");
+        assertThat(driver.findElement(By.id("date")).getText()).isEqualTo("2020-10-12");
+        assertThat(driver.findElement(By.id("time")).getText()).isEqualTo("10:15");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class TakeE2ETest {
 
         WebElement dateInput = driver.findElement(By.id("date"));
         dateInput.clear();
-        dateInput.sendKeys("11-11-1999" + Keys.TAB + "11:11");
+        dateInput.sendKeys("11-11-1999" + Keys.TAB + "11:11A");
 
         List<WebElement> takenMedications = driver.findElements(By.className("checkbox-group"));
         assertThat(takenMedications.size()).isGreaterThanOrEqualTo(1);

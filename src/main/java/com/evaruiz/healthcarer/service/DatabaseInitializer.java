@@ -28,7 +28,7 @@ public class DatabaseInitializer{
     private final MedicationRepository medicationRepository;
     private final TreatmentRepository treatmentRepository;
     private final TakeRepository takeRepository;
-    private static final String uploadFilePath = "src/main/resources/static/images/Producto1.jpg";
+    private static final String uploadFilePath = "uploads/Producto1.jpg";
     private static final File uploadFile = new File(uploadFilePath);
 
 

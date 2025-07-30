@@ -54,7 +54,7 @@ public class MedicationController {
     }
 
     @GetMapping("/{id}")
-    public String showMedicationDetails(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String showMedicationDetails(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Long currentUser = getCurrentUser();
         if (currentUser == null) {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para ver tu medicación.");
@@ -94,7 +94,7 @@ public class MedicationController {
 
     @PostMapping("/save")
     public String saveMedication(@ModelAttribute CreateMedicationDTO medication,
-                                 @RequestParam("imageFile") MultipartFile imageFile,
+                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                  RedirectAttributes redirectAttributes) {
         MedicationDB savedMed;
         Long currentUser = getCurrentUser();
@@ -122,8 +122,6 @@ public class MedicationController {
             if (imageFile != null && !imageFile.isEmpty()) {
                 String imagePath = imageService.uploadImage(imageFile);
                 newMedication.setImagePath(imagePath);
-            } else{
-                redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
             }
             savedMed = medicationService.saveMedication(newMedication);
             if (savedMed == null) {
@@ -185,20 +183,15 @@ public class MedicationController {
         existingMedication.setStock(medication.getStock());
         existingMedication.setInstructions(medication.getInstructions());
         existingMedication.setDose(medication.getDose());
-        if (deleteExistingImage) {
-            if (imageFile == null || imageFile.isEmpty()) {
-                redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
-            }
+        if (deleteExistingImage && existingMedication.getImagePath() != null) {
             try {
-                if (existingMedication.getImagePath() != null && !existingMedication.getImagePath().isEmpty()) {
+                if (imageFile != null && !imageFile.isEmpty()) {
                     imageService.deleteImageFile(existingMedication.getImagePath());
                 }
                 try {
                     if (imageFile != null && !imageFile.isEmpty()) {
                         String imagePath = imageService.uploadImage(imageFile);
                         existingMedication.setImagePath(imagePath);
-                    } else{
-                        redirectAttributes.addFlashAttribute("error", "La imagen es obligatoria.");
                     }
                 } catch (IOException e) {
                     redirectAttributes.addFlashAttribute("error", "Error al subir la imagen: " + e.getMessage());
@@ -209,12 +202,12 @@ public class MedicationController {
                 return "redirect:/errorPage";
             }
         }
-        medicationService.saveMedication(existingMedication);
-        return "redirect:/medications/" + existingMedication.getId();
+        MedicationDB m = medicationService.saveMedication(existingMedication);
+        return "redirect:/medications/" + m.getId();
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMedication(@PathVariable java.lang.Long id,
+    public String deleteMedication(@PathVariable Long id,
                                    RedirectAttributes redirectAttributes) {
         Long currentUser = getCurrentUser();
         if (currentUser == null) {

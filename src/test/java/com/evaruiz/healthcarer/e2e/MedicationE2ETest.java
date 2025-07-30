@@ -11,13 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,9 +29,6 @@ public class MedicationE2ETest {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
-
-    private static final String uploadFilePath = "src/main/resources/static/images/Producto1.jpg";
-    private static final File uploadFile = new File(uploadFilePath);
     
     @BeforeEach
     public void setUpTest() {
@@ -41,14 +38,9 @@ public class MedicationE2ETest {
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", prefs);
-
+        options.addArguments("--lang=en-US");
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
 
         driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -85,13 +77,12 @@ public class MedicationE2ETest {
         wait.until(ExpectedConditions.titleIs("Detalles"));
         assertThat(driver.getTitle()).isEqualTo("Detalles");
         assertThat(driver.findElement(By.id("name")).getText()).isNotEmpty();
-        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
 
 
     }
     
     @Test
-    public void createMedicationE2E() {
+    public void createMedicationE2E(){
 
         driver.findElement(By.id("createMedication")).click();
         wait.until(ExpectedConditions.titleIs("Nuevo medicamento"));
@@ -99,12 +90,10 @@ public class MedicationE2ETest {
         driver.findElement(By.id("stock")).sendKeys("100");
         driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
         driver.findElement(By.id("dose")).sendKeys("2");
-        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
         driver.findElement(By.id("create")).click();
         wait.until(ExpectedConditions.titleIs("Detalles"));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
         assertThat(driver.findElement(By.id("name")).getText()).contains("Nuevo");
-        assertThat(driver.findElement(By.id("photo")).isDisplayed()).isTrue();
-
     }
 
     @Test
@@ -130,31 +119,12 @@ public class MedicationE2ETest {
 
     @Test
     public void deleteMedicationE2E() {
-
-
-        driver.findElement(By.id("createMedication")).click();
-        driver.findElement(By.id("name")).sendKeys("DeleteTest");
-        driver.findElement(By.id("stock")).sendKeys("100");
-        driver.findElement(By.id("instructions")).sendKeys("Tomar con agua");
-        driver.findElement(By.id("dose")).sendKeys("2");
-        driver.findElement(By.id("imageFile")).sendKeys(uploadFile.getAbsolutePath());
-        driver.findElement(By.id("create")).click();
-        wait.until(ExpectedConditions.titleIs("Detalles"));
-        driver.findElement(By.id("back")).click();
+        int medicationCount = driver.findElements(By.className("medications-item")).size() - 1;
+        driver.findElement(By.className("delete-button")).click();
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
         wait.until(ExpectedConditions.titleIs("Medicamentos"));
-        List<WebElement> medications = driver.findElements(By.className("medications-item"));
-        for (WebElement medication : medications) {
-            if (medication.getText().contains("DeleteTest")) {
-                medication.findElement(By.className("delete-button")).click();
-                wait.until(ExpectedConditions.alertIsPresent());
-                driver.switchTo().alert().accept();
-                wait.until(ExpectedConditions.titleIs("Medicamentos"));
-                for (WebElement medication2 : driver.findElements(By.className("medications-item"))) {
-                    assertThat(medication2.getText()).doesNotContain("DeleteTest");
-                }
-                break;
-            }
-        }
+        assertThat(driver.findElements(By.className("medications-item")).size()).isEqualTo(medicationCount);
 
 
     }

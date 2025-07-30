@@ -20,8 +20,8 @@ public class TreatmentService {
     public Optional<TreatmentDB> findById(Long id) {
         return treatmentRepository.findById(id);
     }
-    public void save(TreatmentDB take) {
-        treatmentRepository.save(take);
+    public TreatmentDB save(TreatmentDB take) {
+        return treatmentRepository.save(take);
     }
     public void deleteById(Long id) {
         treatmentRepository.deleteById(id);
