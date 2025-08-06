@@ -17,7 +17,7 @@ services:
       start_period: 30s
 
   app:
-    image: mandolin03/healthcarer-api:1.0.1
+    image: mandolin03/healthcarer-api:latest
     container_name: app
     ports:
       - "8443:8443"
