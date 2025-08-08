@@ -34,7 +34,7 @@ public class MedicationDB {
 
     private String imagePath;
 
-    @ManyToMany(mappedBy = "medications")
+    @ManyToMany(mappedBy = "medications" , fetch = FetchType.EAGER)
     private List<TreatmentDB> treatments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
