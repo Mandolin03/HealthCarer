@@ -83,7 +83,7 @@ public class UserController {
             return "redirect:/errorPage";
         }
         model.addAttribute("user", user);
-        return "/users/profile";
+        return "/users/user-profile";
     }
 
     @GetMapping("/users/edit/{id}")
