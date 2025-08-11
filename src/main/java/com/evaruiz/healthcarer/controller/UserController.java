@@ -41,7 +41,7 @@ public class UserController {
             return "redirect:/login";
         }
         model.addAttribute("id", user);
-        return "index";
+        return "redirect:/index";
     }
 
 
@@ -83,7 +83,7 @@ public class UserController {
             return "redirect:/errorPage";
         }
         model.addAttribute("user", user);
-        return "/users/user-profile";
+        return "redirect:/users/user-profile";
     }
 
     @GetMapping("/users/edit/{id}")
@@ -99,7 +99,7 @@ public class UserController {
             return "redirect:/errorPage";
         }
         model.addAttribute("user", user);
-        return "/users/editProfile";
+        return "redirect:/users/editProfile";
     }
 
     @PostMapping("/users/edit/{id}")

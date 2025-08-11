@@ -50,7 +50,7 @@ public class MedicationController {
         List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         medications.sort(Comparator.comparing(MedicationDB::getName));
         model.addAttribute("medications", medications);
-        return "/medications/medication-list";
+        return "redirect:/medications/medication-list";
     }
 
     @GetMapping("/{id}")
@@ -63,7 +63,7 @@ public class MedicationController {
         Optional<MedicationDB> medicationOptional = medicationService.findById(id);
         if (medicationOptional.isPresent()) {
             model.addAttribute("medication", medicationOptional.get());
-            return "/medications/medication";
+            return "redirect:/medications/medication";
         } else {
             redirectAttributes.addFlashAttribute("error", "La medicación que busca no se ha encontrado o no existe.");
             return "redirect:/errorPage";
@@ -89,7 +89,7 @@ public class MedicationController {
             redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
             return "redirect:/errorPage";
         }
-        return "/medications/createMedication";
+        return "redirect:/medications/createMedication";
     }
 
     @PostMapping("/save")
@@ -154,7 +154,7 @@ public class MedicationController {
                 return "redirect:/errorPage";
             }
             model.addAttribute("medication", medication);
-            return "/medications/editMedication";
+            return "redirect:/medications/editMedication";
         } else {
             redirectAttributes.addFlashAttribute("error", "Medication not found for editing.");
             return "redirect:/errorPage";

@@ -67,7 +67,7 @@ public class TreatmentController {
             ));
         }
         model.addAttribute("treatments", formattedTreatments);
-        return "/treatments/treatments";
+        return "redirect:/treatments/treatments";
     }
 
     @GetMapping("/new")
@@ -79,7 +79,7 @@ public class TreatmentController {
         }
         List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         model.addAttribute("medications", medications);
-        return "/treatments/createTreatment";
+        return "redirect:/treatments/createTreatment";
     }
 
     @GetMapping("/{id}")
@@ -108,7 +108,7 @@ public class TreatmentController {
                 treatment.getDispensingFrequency(),
                 medications
         ));
-        return "/treatments/treatment";
+        return "redirect:/treatments/treatment";
     }
     @GetMapping("/edit/{id}")
     public String editTreatment(@PathVariable java.lang.Long id, Model model, RedirectAttributes redirectAttributes) {
@@ -132,7 +132,7 @@ public class TreatmentController {
         }
         model.addAttribute("medicationDTOs", medicationDTOs);
         model.addAttribute("treatment", treatment);
-        return "/treatments/editTreatment";
+        return "redirect:/treatments/editTreatment";
     }
 
     @PostMapping("/save")

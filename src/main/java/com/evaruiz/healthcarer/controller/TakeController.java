@@ -64,7 +64,7 @@ public class TakeController {
         }
         formattedTakes.sort(Comparator.comparing(FormattedDateTake::date).reversed());
         model.addAttribute("takes", formattedTakes);
-        return "/takes/takes";
+        return "redirect:/takes/takes";
 
     }
 
@@ -85,7 +85,7 @@ public class TakeController {
             List<MedicationDB> medications = take.getMedications();
             medications.sort(Comparator.comparing(MedicationDB::getName));
             model.addAttribute("take", new FormattedDateTake(take.getId(), formattedDate, formattedTime, medications));
-            return "/takes/take";
+            return "redirect:/takes/take";
         } else {
             redirectAttributes.addFlashAttribute("error", "La toma que busca no se ha encontrado o no existe.");
             return "redirect:/errorPage";
@@ -101,7 +101,7 @@ public class TakeController {
         }
         List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         model.addAttribute("medications", medications);
-        return "/takes/createTake";
+        return "redirect:/takes/createTake";
     }
 
     @GetMapping("/edit/{id}")
@@ -122,7 +122,7 @@ public class TakeController {
             }
             model.addAttribute("medicationDTOs", medicationDTOs);
             model.addAttribute("take", take);
-            return "/takes/editTake";
+            return "redirect:/takes/editTake";
         } else {
             redirectAttributes.addFlashAttribute("error", "La toma que busca no se ha encontrado o no existe.");
             return "redirect:/errorPage";
