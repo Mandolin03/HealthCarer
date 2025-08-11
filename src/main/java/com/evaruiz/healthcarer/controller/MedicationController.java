@@ -50,7 +50,7 @@ public class MedicationController {
         List<MedicationDB> medications = medicationService.findMedicationsByUserId(currentUser);
         medications.sort(Comparator.comparing(MedicationDB::getName));
         model.addAttribute("medications", medications);
-        return "/medications/medications";
+        return "/medications/medication-list";
     }
 
     @GetMapping("/{id}")
