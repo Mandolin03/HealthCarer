@@ -1,5 +1,6 @@
 package com.evaruiz.healthcarer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,11 +36,16 @@ public class MedicationDB {
     private String imagePath;
 
     @ManyToMany(mappedBy = "medications" , fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<TreatmentDB> treatments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private UserDB user;
 
     @ManyToMany(mappedBy = "medications", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<TakeDB> takes = new ArrayList<>();
+
+
 }

@@ -1,5 +1,6 @@
 package com.evaruiz.healthcarer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,9 +45,11 @@ public class TreatmentDB {
             joinColumns = @JoinColumn(name = "treatment_id"),
             inverseJoinColumns = @JoinColumn(name = "medication_id")
     )
+    @JsonIgnore
     private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
     private UserDB user;
 
     public boolean checkIntakeDates() {

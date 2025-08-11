@@ -1,5 +1,6 @@
 package com.evaruiz.healthcarer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,9 +32,11 @@ public class TakeDB {
             joinColumns = @JoinColumn(name = "take_id"),
             inverseJoinColumns = @JoinColumn(name = "medication_id")
     )
+    @JsonIgnore
     private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private UserDB user;
 
 }
