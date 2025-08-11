@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +37,14 @@ public class MedicationDB {
     private String imagePath;
 
     @ManyToMany(mappedBy = "medications" , fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ToString.Exclude
     private List<TreatmentDB> treatments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ToString.Exclude
     private UserDB user;
 
     @ManyToMany(mappedBy = "medications", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ToString.Exclude
     private List<TakeDB> takes = new ArrayList<>();
-
-
 }

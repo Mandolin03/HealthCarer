@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -45,11 +46,11 @@ public class TreatmentDB {
             joinColumns = @JoinColumn(name = "treatment_id"),
             inverseJoinColumns = @JoinColumn(name = "medication_id")
     )
-    @JsonIgnore
+    @ToString.Exclude
     private List<MedicationDB> medications = new ArrayList<>();
 
     @ManyToOne
-    @JsonIgnore
+    @ToString.Exclude
     private UserDB user;
 
     public boolean checkIntakeDates() {
