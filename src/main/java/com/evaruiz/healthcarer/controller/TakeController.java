@@ -151,6 +151,7 @@ public class TakeController {
             Optional<MedicationDB> medicationOptional = medicationService.findById(medicationId);
             if (medicationOptional.isPresent()) {
                 medications.add(medicationOptional.get());
+                medicationService.discountMedicationStock(medicationId);
             } else {
                 redirectAttributes.addFlashAttribute("error", "Una o más medicaciones no existen.");
 
