@@ -22,7 +22,7 @@ public class ScheduledTasks {
     @Autowired
     private EmailServiceImpl emailService;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 60000)  // 10 minutes
     @Transactional
     public void checkIntakeDates() {
         List<TreatmentDB> treatments = treatmentRepository.findAll();
@@ -38,6 +38,21 @@ public class ScheduledTasks {
                 emailService.sendSimpleMessage(treatment.getUser().getEmail(), subject, text.toString());
                 treatment.setLastTakenDate(LocalDateTime.now());
                 treatmentRepository.save(treatment);
+            }
+        }
+    }
+
+    @Scheduled(fixedRate = 864000000) // 1 day
+    @Transactional
+    public void checkMedicationStock() {
+        List<TreatmentDB> treatments = treatmentRepository.findAll();
+        for (TreatmentDB treatment : treatments) {
+            for (MedicationDB medication : treatment.getMedications()) {
+                if (medication.getStock() <= 5) {
+                    String subject = "Stock de medicación bajo";
+                    String text = "La medicación " + medication.getName() + " está por debajo del nivel mínimo de stock. Por favor, reabastece lo antes posible.";
+                    emailService.sendSimpleMessage(treatment.getUser().getEmail(), subject, text);
+                }
             }
         }
     }
