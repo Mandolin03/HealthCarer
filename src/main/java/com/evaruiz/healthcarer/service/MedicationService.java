@@ -38,4 +38,17 @@ public class MedicationService {
         medication.setUser(null);
         medicationRepository.save(medication);
     }
+
+    public void discountMedicationStock(Long medicationId) {
+        MedicationDB medication = medicationRepository.findById(medicationId)
+                .orElseThrow(() -> new EntityNotFoundException("No existe la medicación con ID: " + medicationId));
+
+        if (medication.getStock() > 0) {
+            medication.setStock(medication.getStock() - 1);
+            medicationRepository.save(medication);
+        } else {
+            throw new IllegalStateException("No hay stock disponible para la medicación con ID: " + medicationId);
+        }
+        medicationRepository.save(medication);
+    }
 }
