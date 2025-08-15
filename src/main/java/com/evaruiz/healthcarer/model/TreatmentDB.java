@@ -18,7 +18,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreatmentDB extends UserDB {
+public class TreatmentDB{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
