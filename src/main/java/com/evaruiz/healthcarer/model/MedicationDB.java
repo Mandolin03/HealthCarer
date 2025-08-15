@@ -20,7 +20,7 @@ public class MedicationDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private java.lang.Long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

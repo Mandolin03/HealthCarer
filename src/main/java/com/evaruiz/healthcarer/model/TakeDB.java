@@ -21,11 +21,11 @@ public class TakeDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private java.lang.Long id;
+    private Long id;
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
-    LocalDateTime date;
+    private LocalDateTime date;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

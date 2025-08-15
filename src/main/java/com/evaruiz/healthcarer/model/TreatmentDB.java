@@ -18,11 +18,11 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreatmentDB {
+public class TreatmentDB extends UserDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private java.lang.Long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
