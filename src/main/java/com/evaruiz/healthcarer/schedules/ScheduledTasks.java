@@ -75,7 +75,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(fixedRate = 864000000)
+    @Scheduled(fixedRate = 43200) // 12 hours
     @Transactional
     public void checkMedicationStock() {
         List<TreatmentDB> treatments = treatmentRepository.findAll();
