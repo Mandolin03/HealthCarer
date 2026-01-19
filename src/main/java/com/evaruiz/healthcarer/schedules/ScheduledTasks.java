@@ -35,7 +35,7 @@ public class ScheduledTasks {
     @Autowired
     private EmailServiceImpl emailService;
 
-    @Scheduled(fixedRate = 18000) // 5 minutes
+    @Scheduled(fixedRate = 60000) // 5 minutes
     @Transactional
     public void checkIntakeDates() {
         List<TreatmentDB> treatments = treatmentRepository.findAll();
@@ -75,7 +75,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(fixedRate = 43200) // 12 hours
+    @Scheduled(fixedRate = 60000) // 12 hours
     @Transactional
     public void checkMedicationStock() {
         List<TreatmentDB> treatments = treatmentRepository.findAll();

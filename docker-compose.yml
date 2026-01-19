@@ -5,8 +5,8 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: healthcarer
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -27,7 +27,9 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - DB_HOST=mysql
       - DB_USER=root
-      - DB_PASSWORD=root
+      - DB_PASSWORD=${DB_ROOT_PASSWORD}
+      - SPRING_MAIL_USERNAME=${MAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${MAIL_PASSWORD}
     command: ["sh", "-c", "sleep 15 && java -jar /app/app.jar"]
 
 volumes:

@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Seguridad: ignorar archivos de variables de entorno
+.env
