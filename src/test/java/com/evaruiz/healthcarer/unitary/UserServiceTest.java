@@ -131,7 +131,7 @@ class UserServiceTest {
                 userService.loadUserByUsername(nonExistentEmail)
         );
 
-        assertEquals("User not found with email: " + nonExistentEmail, exception.getMessage());
+        assertEquals("User not found: " + nonExistentEmail, exception.getMessage());
         verify(userRepository, times(1)).findByEmail(nonExistentEmail);
         verifyNoMoreInteractions(userRepository);
     }
