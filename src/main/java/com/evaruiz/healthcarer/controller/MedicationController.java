@@ -10,6 +10,8 @@ import com.evaruiz.healthcarer.service.MedicationService;
 import com.evaruiz.healthcarer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -71,14 +74,18 @@ public class MedicationController {
     }
 
     @GetMapping("/image/{imageName}")
-    public ResponseEntity<FileSystemResource> serveMedicationImage(@PathVariable String imageName) {
-        FileSystemResource image = imageService.getImageFile(imageName);
-        if (image != null && image.exists()) {
-            return ResponseEntity.ok()
-                    .header("Content-Type", "image/jpeg")
-                    .body(image);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<InputStreamResource> serveMedicationImage(@PathVariable String imageName) {
+        try {
+            InputStream imageStream = imageService.getImageFile(imageName);
+            if (imageStream != null) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(new InputStreamResource(imageStream));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -99,44 +106,37 @@ public class MedicationController {
         MedicationDB savedMed;
         Long currentUser = getCurrentUser();
         if (currentUser == null) {
-            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para crear una medicación.");
+            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión.");
             return "redirect:/errorPage";
         }
         try {
             if(!medication.validate()){
-                redirectAttributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
+                redirectAttributes.addFlashAttribute("error", "Campos obligatorios vacíos.");
                 return "redirect:/errorPage";
             }
+
             MedicationDB newMedication = new MedicationDB();
             newMedication.setName(medication.name());
             newMedication.setStock(medication.stock());
             newMedication.setInstructions(medication.instructions());
             newMedication.setDose(medication.dose());
+
             UserDB newUser = userService.findById(currentUser);
-            if (newUser == null) {
-                redirectAttributes.addFlashAttribute("error", "El usuario no existe.");
-                return "redirect:/errorPage";
-            }
             newMedication.setUser(newUser);
 
             if (imageFile != null && !imageFile.isEmpty()) {
+
                 String imagePath = imageService.uploadImage(imageFile);
                 newMedication.setImagePath(imagePath);
             }
-            savedMed = medicationService.saveMedication(newMedication);
-            if (savedMed == null) {
-                redirectAttributes.addFlashAttribute("error", "Error al guardar la medicación.");
-                return "redirect:/errorPage";
-            }
 
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "Error al subir la imagen: " + e.getMessage());
-            return "redirect:/errorPage";
+            savedMed = medicationService.saveMedication(newMedication);
+            return "redirect:/medications/" + savedMed.getId();
+
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al crear la medicación: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error: " + e.getMessage());
             return "redirect:/errorPage";
         }
-        return "redirect:/medications/" + savedMed.getId();
     }
 
     @GetMapping("/edit/{id}")
@@ -163,47 +163,44 @@ public class MedicationController {
 
     @PostMapping("/update/{id}")
     public String updateMedication(@ModelAttribute MedicationDB medication,
-                                   @PathVariable java.lang.Long id,
+                                   @PathVariable Long id,
                                    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                    @RequestParam(value = "deleteExistingImage", defaultValue = "false") boolean deleteExistingImage,
                                    RedirectAttributes redirectAttributes) {
 
         Long currentUser = getCurrentUser();
-        if (currentUser == null) {
-            redirectAttributes.addFlashAttribute("error", "Debes haber iniciado sesión para editar tu medicación.");
-            return "redirect:/errorPage";
-        }
         Optional<MedicationDB> optionalMedication = medicationService.findById(id);
-        if (optionalMedication.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "La medicación que intenta editar no existe.");
-            return "redirect:/errorPage";
-        }
+
+        if (optionalMedication.isEmpty()) return "redirect:/errorPage";
+
         MedicationDB existingMedication = optionalMedication.get();
         existingMedication.setName(medication.getName());
         existingMedication.setStock(medication.getStock());
         existingMedication.setInstructions(medication.getInstructions());
         existingMedication.setDose(medication.getDose());
-        if (deleteExistingImage && existingMedication.getImagePath() != null) {
-            try {
-                if (imageFile != null && !imageFile.isEmpty()) {
+
+        try {
+            // Lógica de borrado/reemplazo en MinIO
+            if (deleteExistingImage && existingMedication.getImagePath() != null) {
+                imageService.deleteImageFile(existingMedication.getImagePath());
+                existingMedication.setImagePath(null);
+            }
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // Si ya tenía imagen, borramos la vieja del bucket
+                if (existingMedication.getImagePath() != null) {
                     imageService.deleteImageFile(existingMedication.getImagePath());
                 }
-                try {
-                    if (imageFile != null && !imageFile.isEmpty()) {
-                        String imagePath = imageService.uploadImage(imageFile);
-                        existingMedication.setImagePath(imagePath);
-                    }
-                } catch (IOException e) {
-                    redirectAttributes.addFlashAttribute("error", "Error al subir la imagen: " + e.getMessage());
-                    return "redirect:/errorPage";
-                }
-            } catch (IOException e) {
-                redirectAttributes.addFlashAttribute("error", "Error al eliminar la imagen: " + e.getMessage());
-                return "redirect:/errorPage";
+                String imagePath = imageService.uploadImage(imageFile);
+                existingMedication.setImagePath(imagePath);
             }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error en MinIO: " + e.getMessage());
+            return "redirect:/errorPage";
         }
-        MedicationDB m = medicationService.saveMedication(existingMedication);
-        return "redirect:/medications/" + m.getId();
+
+        medicationService.saveMedication(existingMedication);
+        return "redirect:/medications/" + id;
     }
 
     @PostMapping("/delete/{id}")

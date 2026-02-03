@@ -18,7 +18,9 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreatmentDB{
+public class TreatmentDB {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

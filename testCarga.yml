@@ -1,0 +1,41 @@
+config:
+  target: "http://localhost:8443"
+  tls:
+    rejectUnauthorized: false
+  plugins:
+    expect: { }
+  defaults:
+    headers:
+      Connection: "keep-alive"
+  http:
+    cookies: true
+    extendedMetrics: true
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: "Salto de réplica (Test de Carga)"
+
+scenarios:
+  - name: "Flujo Completo: Autenticación y Carga de Datos"
+    flow:
+      - get:
+          url: "/login"
+          expect:
+            - statusCode: 200
+
+      - post:
+          url: "/login"
+          form:
+            email: "alice@example.com"
+            password: "password"
+          followRedirect: false
+          expect:
+            - statusCode: 302
+
+
+      - think: 5
+
+      - get:
+          url: "/treatments/"
+          expect:
+            - statusCode: 200

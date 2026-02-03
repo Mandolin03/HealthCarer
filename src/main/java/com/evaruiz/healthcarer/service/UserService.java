@@ -36,9 +36,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).map(LoggedUser::new).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return userRepository.findByEmail(email)
+                .map(LoggedUser::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     }
 
     public boolean findByEmail(String normalizedEmail) {

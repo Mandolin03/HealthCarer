@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -Dmaven.test.skip=true
 
 
-FROM openjdk:24
+FROM eclipse-temurin:25-jdk-ubi10-minimal
 
 
 WORKDIR /app

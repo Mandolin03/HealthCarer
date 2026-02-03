@@ -1,0 +1,34 @@
+config:
+  target: "http://localhost:8443"
+  tls:
+    rejectUnauthorized: false
+  plugins:
+    expect: { }
+    defaults:
+      headers:
+        Connection: "keep-alive"
+  http:
+    cookies: true
+    extendedMetrics: true
+  phases:
+    - duration: 23
+      arrivalRate: 15
+      name: "Test de Navegación"
+
+scenarios:
+  - name: "Login y visualización de tratamientos"
+    flow:
+      - get:
+          url: "/login"
+      - post:
+          url: "/login"
+          form:
+            email: "alice@example.com"
+            password: "password"
+          followRedirect: false
+
+      - think: 5
+
+      - get:
+          url: "/treatments/"
+          strictSSL: false
