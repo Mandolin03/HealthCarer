@@ -1,5 +1,5 @@
 config:
-  target: "http://localhost:8443"
+  target: "https://localhost"
   tls:
     rejectUnauthorized: false
   plugins:
@@ -11,7 +11,7 @@ config:
     cookies: true
     extendedMetrics: true
   phases:
-    - duration: 30
+    - duration: 22
       arrivalRate: 5
       name: "Salto de réplica (Test de Carga)"
 

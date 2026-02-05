@@ -10,10 +10,6 @@ config:
   http:
     cookies: true
     extendedMetrics: true
-  phases:
-    - duration: 23
-      arrivalRate: 15
-      name: "Test de Navegación"
 
 scenarios:
   - name: "Login y visualización de tratamientos"

@@ -1,36 +1,95 @@
 version: '3.8'
 
 services:
+  # 1 réplica de la BBDD
   mysql:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    networks:
+      - healthcare-net
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - healthcare-net
+
+  # 3 réplicas del backend
   app:
-    image: mandolin03/healthcarer:dev
-    container_name: app
-    ports:
-      - "8443:8443"
+    image: mandolin03/healthcarer:session
+    deploy:
+      replicas: 3
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_started
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DB_HOST=mysql
-      - DB_USER=root
-      - DB_PASSWORD=${DB_ROOT_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_ROOT_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/healthcarer?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=${DS_NAME}
+      - SPRING_DATASOURCE_PASSWORD=${DS_PASSWORD}
+      - MINIO_HOST=${MINIO_HOST}
+      - MINIO_ROOT_USER=${MINIO_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
       - SPRING_MAIL_USERNAME=${MAIL_USERNAME}
       - SPRING_MAIL_PASSWORD=${MAIL_PASSWORD}
-    command: ["sh", "-c", "sleep 15 && java -jar /app/app.jar"]
+      - SPRING_REDIS_HOST=${REDIS_HOST}
+    networks:
+      - healthcare-net
+    expose:
+      - "8443"
+
+
+  # HAProxy
+  haproxy:
+    image: haproxy:3.1
+    container_name: haproxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8404:8404"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./haproxy-cert.pem:/usr/local/etc/haproxy/haproxy-cert.pem:ro
+    depends_on:
+      - app
+    networks:
+      - healthcare-net
+
+  # MinIO
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+    networks:
+      - healthcare-net
+    ports:
+      - "9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+networks:
+  healthcare-net:
+    driver: bridge
+
 
 volumes:
   mysql_data:
+  minio_data:

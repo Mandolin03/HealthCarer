@@ -219,8 +219,9 @@ public class TakeController {
         if (takeOptional.isPresent()) {
             TakeDB take = takeOptional.get();
             if (take.getUser().getId().equals(currentUser)) {
-                takeService.deleteById(take.getId());
                 userService.removeTakeFromUser(currentUser, take.getId());
+                takeService.deleteById(take.getId());
+
             } else {
                 redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar esta toma.");
                 return "redirect:/errorPage";
